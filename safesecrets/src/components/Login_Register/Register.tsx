@@ -2,17 +2,10 @@ import {useState} from 'react';
 import { v4 as uuid } from 'uuid';
 import CountryList from '../../assets/countryList.json';
 import { registerUserApi } from './api';
+import { RegisterDetails, RegisterProps } from './types';
 
-export interface RegisterDetails{
-  id: string,
-  name: string,
-  email: string,
-  country: string,
-  phone: number | string,
-  password: string
-}
 
-const Register = ({setSignInPopup, setShowLogin}) => {
+const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
   const [registerDetails, setRegisterDetails] = useState<RegisterDetails>({
     id: '',
     name: '',

@@ -21,6 +21,23 @@
   }
 }
 
+.google-logout-btn > span{
+  padding: 0.15rem 0.15rem !important;
+}
+
+.user-logout-btn{
+  padding: 0.15rem 0.15rem !important;
+  background-color: #FFFFFF;
+  color: rgba(0, 0, 0, 0.54);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px 0px, rgba(0, 0, 0, 0.24) 0px 0px 1px 0px;
+  padding: 0.15rem;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+}
+
 .user-container{
   .user-icon-content{
     display: flex;
@@ -37,13 +54,12 @@
     position: absolute;
     top: 5rem;
     right: 1rem;
-    width: 8rem;
-    height: 5.5rem;
     z-index: 10;
     background-color: var(--clr-black-200);
     border-radius: 0.15rem;
     font-size: var(--fs-300);
     color: var(--clr-white-200);
+    padding: 0.25rem 0.15rem;
 
     .user-info-list{
       height: 100%;

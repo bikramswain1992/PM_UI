@@ -1,18 +1,19 @@
 import {useEffect, useState} from 'react';
 import {User, getUser, clearCacheAndRedirect} from '../../utility/user';
+import UserGoogleLogout from './UserGoogleLogout';
+import UserLogout from './UserLogout';
 import '../../css/header.scss';
 import logo from '../../images/logo.svg';
 import userIcon from '../../images/user.svg';
 import badgeIcon from '../../images/badge.svg';
 import mailIcon from '../../images/mail.svg';
-import logoutIcon from '../../images/logout.svg';
 
 const Header = ({setShowLogin, loginStatusChange}) => {
 
   const[user, setUser] = useState<(User | null)>(getUser());
   const [userName, setUserName] = useState({
-    name: "",
-    initials: ""
+    name: '',
+    initials: ''
   });
   const [showUserDetails, setShowUserDetails] = useState(false);
   
@@ -50,27 +51,30 @@ const Header = ({setShowLogin, loginStatusChange}) => {
     if(user !== null){
       return <>
         <div className='user-container'>
-          <div className="user-icon-content" onClick={showHideUserDetails}>
-            <img src={userIcon} alt="User" />
-            <div className="user-name">{userName.name}</div>
+          <div className='user-icon-content' onClick={showHideUserDetails}>
+            <img src={userIcon} alt='User' />
+            <div className='user-name'>{userName.name}</div>
           </div>
           {
             showUserDetails
             ?
-            <div className="user-details">
-              <div className="user-info-list">
+            <div className='user-details'>
+              <div className='user-info-list'>
                 <div className='user-info' title={user.name}>
-                  <img src={badgeIcon} alt="name" />
+                  <img src={badgeIcon} alt='name' />
                   {user.name}
                 </div>
                 <div className='user-info' title={user.email}>
-                  <img src={mailIcon} alt="email" />
+                  <img src={mailIcon} alt='email' />
                   {user.email}
                 </div>
-                <div className='user-info' onClick={userLogout}>
-                  <img src={logoutIcon} alt="logout" />
-                  Logout
-                </div>
+                {
+                  user.loginType === 'normal'
+                  ?
+                  <UserLogout />
+                  :
+                  <UserGoogleLogout />
+                }
               </div>
             </div>
             :
@@ -85,11 +89,11 @@ const Header = ({setShowLogin, loginStatusChange}) => {
 
   return (
     <header className='bg-white site-header'>
-      <div className="header-content">
-        <div className="logo">
-          <img className='logo-img' src={logo} alt="Logo" />
+      <div className='header-content'>
+        <div className='logo'>
+          <img className='logo-img' src={logo} alt='Logo' />
         </div>
-        <div className="user-login">
+        <div className='user-login'>
           {getUserOrLogin()}
         </div>
       </div>

@@ -10,6 +10,7 @@
 }
 .message{
   text-align: center;
+  margin-bottom: 3rem;
   font-size: var(--fs-800);
   animation: message-animation 1s forwards ease-in-out;
   opacity: 0;

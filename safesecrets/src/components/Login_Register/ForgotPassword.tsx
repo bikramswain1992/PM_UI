@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { resetPasswordRequestApi } from './api';
+import { ForgotPasswordProps } from './types';
 
-const ForgotPassword = ({setSignInPopup}) => {
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({setSignInPopup}) => {
 
   const [email, setEmail] = useState('');
   const [isResetSuccess, setIsResetSuccess] = useState(false);

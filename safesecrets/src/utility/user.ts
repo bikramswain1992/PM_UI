@@ -4,7 +4,8 @@ export interface User {
   email: string,
   country: string,
   phone: number,
-  token: string
+  token: string,
+  loginType: string
 }
 
 export const getUser = () : (User | null) => {

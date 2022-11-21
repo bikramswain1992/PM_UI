@@ -3,12 +3,9 @@ import Login from './Login';
 import Register from './Register';
 import '../../css/loginregister.scss';
 import ForgotPassword from './ForgotPassword';
+import { LoginRegisterProps } from './types';
 
-export interface LoginRegisterProps {
-  setSignIn: (e: boolean) => void
-}
-
-const LoginRegister = ({setShowLogin, setLoginStatusChange}) => {
+const LoginRegister:React.FC<LoginRegisterProps> = ({setShowLogin, setLoginStatusChange}) => {
 
   const [signInPopup, setSignInPopup] = useState('login');
 

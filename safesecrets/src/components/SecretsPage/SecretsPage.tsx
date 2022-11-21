@@ -87,7 +87,7 @@ const SecretsPage = () => {
 
   return (
     <>
-      <div className="my-secrets-header tab-bar">
+      <div className="my-secrets-header secret-tab-bar">
         <div className="search-keys">
           <input type="text" placeholder='Search' value={searchKey} onChange={(e) => setSearchKey(e.target.value)} />
           <img src={searchIcon} alt="search" />
@@ -103,7 +103,7 @@ const SecretsPage = () => {
         <div className="my-secrets-main">
           {
             filteredSecrets.map((x,_) => 
-              <div className='tab-bar' key={_}>
+              <div className='secret-tab-bar' key={_}>
                 <span>{x.key}</span>
                 <span>********</span>
                 <span>

@@ -62,8 +62,8 @@ h1,h2,h3,h4,h5,h6{
   font: inherit;
 }
 input, select{
-  border:none;
-  background-image:none;
+  border: none;
+  background-image: none;
   background-color:transparent;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -78,9 +78,14 @@ a{
   color: inherit;
 }
 
+.main-content{
+  display: grid;
+  grid-template-rows: 1fr 5fr 1fr;
+}
 .container{
   max-width: 1440px;
-  margin: auto;
+  min-width: 80%;
+  margin: 0 auto;
 }
 .bg-white{
   background-color: var(--clr-white-400);
@@ -164,9 +169,8 @@ select{
   color: var(--clr-black-200);
 }
 
-// .main-content{
-//   position: relative;
-// }
-@media only screen and (max-width: 768px){
-
+@media only screen and (min-width: 1080px){
+  .main-content{
+    grid-template-rows: 1fr 7fr 1fr;
+  }
 }
