@@ -43,10 +43,6 @@ const Header = ({setShowLogin, loginStatusChange}) => {
     setShowUserDetails(prev => !prev);
   }
 
-  const userLogout = () => {
-    clearCacheAndRedirect();
-  }
-
   const getUserOrLogin = () => {
     if(user !== null){
       return <>

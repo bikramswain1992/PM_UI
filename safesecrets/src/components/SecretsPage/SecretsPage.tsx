@@ -1,29 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import {getUser, clearCacheAndRedirect} from '../../utility/user';
 import { GetMySecretsAPI } from '../../utility/passwordmanagerapis';
+import SecretPopup from './SecretPopup';
+import Popup from '../common/popup/Popup';
+import { getMySecretsApi, saveMySecretsApi } from './api';
+import { MySecrets, Secret } from './types';
 import '../../css/secretspage.scss';
 import searchIcon from '../../images/search.svg';
 import addIcon from '../../images/add.svg';
 import showIcon from '../../images/show.svg';
 import deleteIcon from '../../images/delete.svg';
-import SecretPopup from './SecretPopup';
-import { getMySecretsApi } from './api';
 
-export interface MySecrets {
-  id: string,
-  key: string
-}
-
-export interface Secret {
-  id: string,
-  key: string,
-  secret: string
-}
 
 const SecretsPage = () => {
 
   const [user, setUser] = useState(getUser());
-  const [mySecrets, setMySecrets] = useState<MySecrets[] | null>(null)
+  const [mySecrets, setMySecrets] = useState<MySecrets[] | undefined>()
   const [searchKey, setSearchKey] = useState('');
   const [showSecretPopup, setShowSecretPopup] = useState(false);
   const [currentSecret, setCurrentSecret] = useState<MySecrets>();
@@ -81,8 +73,19 @@ const SecretsPage = () => {
     setShowSecretPopup(false);
   }
 
-  const saveMySecret = async (secret:MySecrets) => {
+  const saveMySecret = async (secret:Secret) => {
+    const saveSecretResponse = await saveMySecretsApi(secret, user?.token)
 
+    if(saveSecretResponse.errors){
+      alert(saveSecretResponse.errors[0]);
+      return;
+    }
+
+    alert('Your secret has been successfully saved!');
+    setMySecrets((prev) => {
+      return [...prev!, {id: secret.id, key: secret.key}];
+    });
+    closeAddSecretPopup();
   }
 
   return (
@@ -104,12 +107,16 @@ const SecretsPage = () => {
           {
             filteredSecrets.map((x,_) => 
               <div className='secret-tab-bar' key={_}>
-                <span>{x.key}</span>
-                <span>********</span>
-                <span>
-                  <img src={showIcon} alt="show secret" onClick={() => showSecret(x.id)} />
+                <span className='secret-key'>
+                  <span className='text-sm text-clr-secondary'>Name</span>
+                  <span>{x.key}</span>
                 </span>
-                <span>
+                <span className='secret-symbol'>
+                  <span className='text-sm text-clr-secondary'>Secret</span>
+                  <span>★★★★★★</span>
+                </span>
+                <span className='secret-actions'>
+                  <img src={showIcon} alt="show secret" onClick={() => showSecret(x.id)} />
                   <img src={deleteIcon} alt="delete secret" />
                 </span>
               </div>
@@ -124,9 +131,9 @@ const SecretsPage = () => {
       {
         showSecretPopup
         ?
-        <div className="add-secret-popup popup">
-          <SecretPopup secret={currentSecret} closeSecretPopup={closeAddSecretPopup} saveMySecret={saveMySecret} />
-        </div>
+        <Popup customClass='add-secret-popup'>
+          <SecretPopup secret={currentSecret} closeSecretPopup={closeAddSecretPopup} saveMySecret={saveMySecret} token={user?.token} />
+        </Popup>
         :
         <></>
       }

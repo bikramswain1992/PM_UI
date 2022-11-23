@@ -1,20 +1,52 @@
-import { useState } from 'react'
-import {MySecrets} from './SecretsPage';
+import { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import { readSecretApi } from './api';
+import EditSecret from './EditSecret';
+import {MySecrets, Secret} from './types';
+import { SecretPopupProps  } from './types';
+import ViewSecret from './ViewSecret';
 
-const SecretPopup = ({secret, closeSecretPopup, saveMySecret}) => {
+const SecretPopup: React.FC<SecretPopupProps> = ({secret, closeSecretPopup, saveMySecret, token}) => {
 
-  const [currentSecret, setCurrentSecret] = useState<MySecrets>(secret);
+  const [currentSecret, setCurrentSecret] = useState<MySecrets | undefined>(secret);
+  const [currentSecretDetails, setCurrentSecretDetails] = useState<Secret>({
+    id:'',
+    key:'',
+    secret:''
+  });
+  const [isViewMode, setIsViewMode] = useState(false);
 
-  const closeLogin = () =>{
-    closeSecretPopup();
+  useEffect(() => {
+    if(currentSecret){
+      viewSecret();
+    }
+  },[currentSecret]);
+
+  const viewSecret = async () => {
+    const readSecretResponse = await readSecretApi(currentSecret?.id, token ?? '');
+
+    if(readSecretResponse.errors){
+      alert(readSecretResponse.errors[0]);
+      return;
+    }
+
+    setIsViewMode(true);
+    setCurrentSecretDetails({id: currentSecret?.id ?? '', key: currentSecret?.key ?? '', secret: readSecretResponse});
   }
 
   const saveSecret = () => {
-    saveMySecret(currentSecret);
+    if(!currentSecretDetails.key && !currentSecretDetails.secret){
+      alert('Please fill name and secret values before saving!');
+    }
+    if(currentSecretDetails.id){
+      saveMySecret(currentSecretDetails);
+      return;
+    }
+    saveMySecret({...currentSecretDetails, id: uuid()});
   }
 
   const onChange = (e: any) => {
-    setCurrentSecret({...currentSecret, [e.target.name]: e.target.value});
+    setCurrentSecretDetails({...currentSecretDetails, [e.target.name]: e.target.value});
   }
 
   return (
@@ -23,29 +55,24 @@ const SecretPopup = ({secret, closeSecretPopup, saveMySecret}) => {
         <h4>Add secret to <span className='text-clr-primary'>SafeSecrets</span> vault</h4>
       </div>
       <div className="popup-body">
-        <div className='input-group-vertical'>
-          <label>Key</label>
-          <input
-            name='key'
-            type="text"
-            placeholder='Key'
-            value={currentSecret.key}
-            onChange={onChange} />
-        </div>
-        <div className='input-group-vertical'>
-          <label>Secret</label>
-          <input
-            name='secret'
-            type="text"
-            placeholder='********'
-            value={currentSecret.secret}
-            onChange={onChange} />
-        </div>
+        {
+          isViewMode
+          ?
+          <ViewSecret name={currentSecretDetails.key} secret={currentSecretDetails.secret} />
+          :
+          <EditSecret secret={currentSecretDetails} onChange={onChange} />
+        }
       </div>
       <div className="popup-footer">
         <div className="btn-container-center">
-          <button className='btn btn-secondary' onClick={closeLogin}>Cancel</button>
-          <button className='btn btn-primary' onClick={saveSecret}>Save</button>
+          <button className='btn btn-secondary' onClick={closeSecretPopup}>Cancel</button>
+          {
+            isViewMode
+            ?
+            <button className='btn btn-primary' onClick={() => setIsViewMode(false)}>Edit</button>
+            :
+            <button className='btn btn-primary' onClick={saveSecret}>Save</button>
+          }
         </div>
       </div>
     </>

@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import Login from './Login';
 import Register from './Register';
+import Popup from '../common/popup/Popup';
 import '../../css/loginregister.scss';
 import ForgotPassword from './ForgotPassword';
 import { LoginRegisterProps } from './types';
@@ -20,11 +21,13 @@ const LoginRegister:React.FC<LoginRegisterProps> = ({setShowLogin, setLoginStatu
   }
 
   return (
-    <div className='login_register-content popup'>
-      {
-        getPopupToDisplay()
-      }
-    </div>
+    <>
+      <Popup>
+        {
+          getPopupToDisplay()
+        }
+      </Popup>
+    </>
   )
 }
 

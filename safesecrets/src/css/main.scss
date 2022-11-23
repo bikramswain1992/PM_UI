@@ -5,6 +5,7 @@
   --clr-white-400: #FFFFFF;
   --clr-black-400: #000000;
   --clr-black-200: #2F2F2F;
+  --clr-black-150: #A1A1A1;
   --clr-black-100: #C4C4C4;
   --clr-primary: #FF5722;
   --clr-primary-dark: #DB342C;
@@ -61,7 +62,7 @@ h1,h2,h3,h4,h5,h6{
   height: inherit;
   font: inherit;
 }
-input, select{
+input, select, textarea{
   border: none;
   background-image: none;
   background-color:transparent;
@@ -69,7 +70,7 @@ input, select{
   -moz-box-shadow: none;
   box-shadow: none;
 }
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
 }
 a{
@@ -141,17 +142,20 @@ a{
     font-size: var(--fs-300);
   }
 }
-input, select{
+input, select, textarea{
   border-color: var(--clr-black-100);
   border-width: 0.2px;
   border-style: solid;
 }
-input{
+input, textarea{
   font-size: var(--fs-400);
   line-height: 1.5;
 }
 select{
   height: 1.65rem;
+}
+input:focus, select:focus, textarea:focus{
+  border-color: var(--clr-black-150);
 }
 .nav-link{
   color: var(--clr-text-secondary);
@@ -166,6 +170,9 @@ select{
   color: var(--clr-primary);
 }
 .text-clr-secondary{
+  color: var(--clr-text-secondary);
+}
+.text-clr-grey{
   color: var(--clr-black-200);
 }
 
