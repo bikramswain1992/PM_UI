@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import {setUser} from '../../utility/user';
+import {setUser} from '../../utility/session';
 import {useNavigate} from 'react-router-dom';
 import { loginApi, loginViaIdentityProviderApi } from './api';
 import {GoogleLogin} from 'react-google-login';
 import {gapi} from 'gapi-script';
+import Alert from '../common/Alert/Alert';
+import Loader from '../common/Loader/Loader';
 import { LoginDetails, LoginIdentityProviderDetails, LoginProps } from './types';
 
 import '../../css/popup.scss';
+import { AlertProps, AlertType } from '../../utility/globaltypes';
 
 const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStatusChange}) => {
 
@@ -27,15 +30,37 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
     password:''
   });
 
+  const [alertDetails, setAlertDetails] = useState<AlertProps>({
+    title: '',
+    text: '',
+    type: AlertType.success,
+    show: 0
+  });
+
+  const [showLoader, setShowLoader] = useState(false);
+
   const login = async () => {
     if(!(loginDetails.email && loginDetails.password)){
-      alert('Email and Password are required');
+      setAlertDetails({
+        title: '',
+        text: 'Email and Password are required.',
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
+    setShowLoader(true);
+
     const userDetails = await loginApi(loginDetails);
 
     if(userDetails.errors){
-      alert(userDetails.errors.join(','));
+      setShowLoader(false);
+      setAlertDetails({
+        title: '',
+        text: userDetails.errors.join(','),
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
 
@@ -51,6 +76,7 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
   }
 
   const googleLoginSuccess = async (res: any) => {
+    
     const profile = res.profileObj;
     const loginViaIdentityDetails: LoginIdentityProviderDetails = {
       email: profile.email,
@@ -59,10 +85,17 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
       provider: 'Google'
     };
 
+    setShowLoader(true);
     const userDetails = await loginViaIdentityProviderApi(loginViaIdentityDetails);
 
     if(userDetails.errors){
-      alert(userDetails.errors.join(','));
+      setShowLoader(false);
+      setAlertDetails({
+        title: '',
+        text: userDetails.errors.join(','),
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
 
@@ -74,6 +107,7 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
   }
 
   const postLoginActions = (userDetails: any, loginType: string) => {
+    setShowLoader(false);
     userDetails['loginType'] = loginType;
     setUser(userDetails);
     setLoginStatusChange(true);
@@ -128,6 +162,8 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
           Don't have account?
         </a>
       </div>
+      <Alert title={alertDetails.title} text={alertDetails.text} type={alertDetails.type} show={alertDetails.show} />
+      <Loader showLoader={showLoader}/>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {clearCacheAndRedirect} from '../../utility/user';
+import {clearCacheAndRedirect} from '../../utility/session';
 import logoutIcon from '../../images/logout.svg';
 
 const UserLogout = () => {

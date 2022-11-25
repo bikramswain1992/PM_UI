@@ -1,12 +1,8 @@
+import { Secret } from "../../utility/globaltypes";
+
 export type MySecrets = {
   id: string,
   key: string
-}
-
-export type Secret = {
-  id: string,
-  key: string,
-  secret: string
 }
 
 export interface SecretPopupProps {

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {User, getUser, clearCacheAndRedirect} from '../../utility/user';
+import {User, getUser, clearCacheAndRedirect} from '../../utility/session';
 import UserGoogleLogout from './UserGoogleLogout';
 import UserLogout from './UserLogout';
 import '../../css/header.scss';
@@ -10,7 +10,7 @@ import mailIcon from '../../images/mail.svg';
 
 const Header = ({setShowLogin, loginStatusChange}) => {
 
-  const[user, setUser] = useState<(User | null)>(getUser());
+  const[user, setUser] = useState<(User | undefined)>(getUser());
   const [userName, setUserName] = useState({
     name: '',
     initials: ''
@@ -44,7 +44,7 @@ const Header = ({setShowLogin, loginStatusChange}) => {
   }
 
   const getUserOrLogin = () => {
-    if(user !== null){
+    if(user){
       return <>
         <div className='user-container'>
           <div className='user-icon-content' onClick={showHideUserDetails}>

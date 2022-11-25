@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { readSecretApi } from './api';
 import EditSecret from './EditSecret';
-import {MySecrets, Secret} from './types';
+import {MySecrets} from './types';
+import { AlertProps, AlertType, Secret } from '../../utility/globaltypes';
 import { SecretPopupProps  } from './types';
 import ViewSecret from './ViewSecret';
+import Alert from '../common/Alert/Alert';
+import Loader from '../common/Loader/Loader';
+import { getViewedSecret, setViewedSecrets } from '../../utility/session';
 
 const SecretPopup: React.FC<SecretPopupProps> = ({secret, closeSecretPopup, saveMySecret, token}) => {
 
@@ -16,6 +20,14 @@ const SecretPopup: React.FC<SecretPopupProps> = ({secret, closeSecretPopup, save
   });
   const [isViewMode, setIsViewMode] = useState(false);
 
+  const [alertDetails, setAlertDetails] = useState<AlertProps>({
+    title: '',
+    text: '',
+    type: AlertType.success,
+    show: 0
+  });
+  const [showLoader, setShowLoader] = useState(false);
+
   useEffect(() => {
     if(currentSecret){
       viewSecret();
@@ -23,20 +35,44 @@ const SecretPopup: React.FC<SecretPopupProps> = ({secret, closeSecretPopup, save
   },[currentSecret]);
 
   const viewSecret = async () => {
-    const readSecretResponse = await readSecretApi(currentSecret?.id, token ?? '');
+    let viewedSecret = getViewedSecret(currentSecret?.id!);
 
-    if(readSecretResponse.errors){
-      alert(readSecretResponse.errors[0]);
-      return;
+    if(!viewedSecret) {
+      setShowLoader(true);
+      const readSecretResponse = await readSecretApi(currentSecret?.id!, token!);
+
+      if(readSecretResponse.errors){
+        setShowLoader(false);
+        setAlertDetails({
+          title: '',
+          text: readSecretResponse.errors.join(','),
+          type: AlertType.error,
+          show: alertDetails.show+1
+        });
+        return;
+      }
+      viewedSecret = {
+        id: currentSecret?.id!,
+        key: currentSecret?.key!,
+        secret: readSecretResponse
+      };
     }
 
     setIsViewMode(true);
-    setCurrentSecretDetails({id: currentSecret?.id ?? '', key: currentSecret?.key ?? '', secret: readSecretResponse});
+    setCurrentSecretDetails({id: currentSecret?.id!, key: currentSecret?.key!, secret: viewedSecret.secret});
+    setViewedSecrets(viewedSecret);
+    setShowLoader(false);
   }
 
   const saveSecret = () => {
     if(!currentSecretDetails.key && !currentSecretDetails.secret){
-      alert('Please fill name and secret values before saving!');
+      setAlertDetails({
+        title: '',
+        text: 'Please fill name and secret values before saving!',
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
+      return;
     }
     if(currentSecretDetails.id){
       saveMySecret(currentSecretDetails);
@@ -75,6 +111,8 @@ const SecretPopup: React.FC<SecretPopupProps> = ({secret, closeSecretPopup, save
           }
         </div>
       </div>
+      <Alert title={alertDetails.title} text={alertDetails.text} type={alertDetails.type} show={alertDetails.show} />
+      <Loader showLoader={showLoader}/>
     </>
   )
 }

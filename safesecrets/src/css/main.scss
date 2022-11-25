@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 :root{
   --clr-white-200: #E4E4E4;
@@ -21,6 +21,7 @@
   --fs-1000: 2.5rem;
 
   --fw-400: 400;
+  --fw-500: 500;
   --fw-300: 300;
   --fw-700: 700;
 }
@@ -30,7 +31,7 @@ body{
 	padding: 0;
 	border: 0;
 	font-size: var(--fs-400);
-	font-family: 'Roboto';
+	font-family: 'Roboto', sans-serif;
   font-weight: var(--fw-400);
   line-height: 1;
   box-sizing: border-box;
@@ -174,6 +175,19 @@ input:focus, select:focus, textarea:focus{
 }
 .text-clr-grey{
   color: var(--clr-black-200);
+}
+
+/*
+Swal css
+*/
+
+.swal2-styled.swal2-confirm{
+  background-color: var(--clr-primary) !important;
+  border-radius: 0.15rem !important;
+  padding: 0.5rem 0.75rem !important;
+}
+.swal2-styled.swal2-confirm:focus{
+  box-shadow: none !important;
 }
 
 @media only screen and (min-width: 1080px){

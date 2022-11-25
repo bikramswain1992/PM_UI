@@ -1,6 +1,6 @@
 import React from 'react';
 import {GoogleLogout} from 'react-google-login';
-import {clearCacheAndRedirect} from '../../utility/user';
+import {clearCacheAndRedirect} from '../../utility/session';
 import logoutIcon from '../../images/logout.svg';
 
 const UserGoogleLogout = () => {

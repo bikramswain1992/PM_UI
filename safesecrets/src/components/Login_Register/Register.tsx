@@ -1,8 +1,11 @@
 import {useState} from 'react';
 import { v4 as uuid } from 'uuid';
+import Alert from '../common/Alert/Alert';
+import Loader from '../common/Loader/Loader';
 import CountryList from '../../assets/countryList.json';
 import { registerUserApi } from './api';
 import { RegisterDetails, RegisterProps } from './types';
+import { AlertProps, AlertType } from '../../utility/globaltypes';
 
 
 const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
@@ -14,6 +17,15 @@ const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
     phone: '',
     password: ''
   });
+
+  const [alertDetails, setAlertDetails] = useState<AlertProps>({
+    title: '',
+    text: '',
+    type: AlertType.success,
+    show: 0
+  });
+
+  const [showLoader, setShowLoader] = useState(false);
 
   const onChange = (e: any) => {
     setRegisterDetails({...registerDetails, [e.target.name]:e.target.value});
@@ -29,28 +41,56 @@ const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
       && registerDetails.country
       && registerDetails.phone
       && registerDetails.password)){
-        alert("All fields are required");
+        setAlertDetails({
+          title: '',
+          text: 'All fields are required',
+          type: AlertType.error,
+          show: alertDetails.show+1
+        });
         return;
     }
 
     const regex = RegExp('(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*?])');
     if(!regex.test(registerDetails.password)){
-      alert('Password should contain atleast one lower case alphabet, one upper case  alphabet, one number, one special character (-+_!@#$%^&*?) and should be atleast 8 characters long.')
+      setAlertDetails({
+        title: '',
+        text: 'Password should contain atleast one lower case alphabet, one upper case  alphabet, one number, one special character (-+_!@#$%^&*?) and should be atleast 8 characters long.',
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
+      return;
     }
     
+    setShowLoader(true);
     registerDetails.id = uuid();
     const registerResponse = await registerUserApi(registerDetails);
 
+    setShowLoader(false);
     if(registerResponse.errors){
       if(registerResponse.errors[0].toLowerCase() === 'duplicate'){
-        alert('User already registered!');
+        setAlertDetails({
+          title: '',
+          text: 'Email is already registered!',
+          type: AlertType.error,
+          show: alertDetails.show+1
+        });
         return;
       }
-      alert(registerResponse.errors.join(','));
+      setAlertDetails({
+        title: '',
+        text: registerResponse.errors.join(','),
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
 
-    alert("Registration successful! Please login now.");
+    setAlertDetails({
+      title: '',
+      text: 'Registration successful! Please check your inbox to verify your account.',
+      type: AlertType.success,
+      show: alertDetails.show+1
+    });
     setSignInPopup('login');
   }
 
@@ -115,12 +155,14 @@ const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
       <div className="popup-footer">
         <div className="btn-container-center">
           <button className='btn btn-secondary' onClick={closeRegister}>Cancel</button>
-          <button className='btn btn-primary' onClick={registerUser}>Login</button>
+          <button className='btn btn-primary' onClick={registerUser}>Register</button>
         </div>
         <a className="nav-link text-sm" onClick={() => setSignInPopup('login')}>
           Back to login
         </a>
       </div>
+      <Alert title={alertDetails.title} text={alertDetails.text} type={alertDetails.type} show={alertDetails.show} />
+      <Loader showLoader={showLoader}/>
     </>
   )
 }

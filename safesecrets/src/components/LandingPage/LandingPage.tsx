@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/landingpage.scss';
 import secure1 from '../../images/secure1.svg';
-import { getUser } from '../../utility/user';
+import { getUser } from '../../utility/session';
 
 const LandingPage = () => {
   const navigate = useNavigate();

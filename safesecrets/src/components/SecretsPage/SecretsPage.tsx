@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import {getUser, clearCacheAndRedirect} from '../../utility/user';
-import { GetMySecretsAPI } from '../../utility/passwordmanagerapis';
+import {getUser, clearCacheAndRedirect, setViewedSecrets} from '../../utility/session';
 import SecretPopup from './SecretPopup';
 import Popup from '../common/popup/Popup';
-import { getMySecretsApi, saveMySecretsApi } from './api';
-import { MySecrets, Secret } from './types';
+import Alert from '../common/Alert/Alert';
+import Loader from '../common/Loader/Loader';
+import { deleteSecretApi, getMySecretsApi, saveMySecretsApi } from './api';
+import { MySecrets } from './types';
+import { AlertProps, AlertType, Secret } from '../../utility/globaltypes';
 import '../../css/secretspage.scss';
 import searchIcon from '../../images/search.svg';
 import addIcon from '../../images/add.svg';
@@ -19,6 +21,14 @@ const SecretsPage = () => {
   const [searchKey, setSearchKey] = useState('');
   const [showSecretPopup, setShowSecretPopup] = useState(false);
   const [currentSecret, setCurrentSecret] = useState<MySecrets>();
+
+  const [alertDetails, setAlertDetails] = useState<AlertProps>({
+    title: '',
+    text: '',
+    type: AlertType.success,
+    show: 0
+  });
+  const [showLoader, setShowLoader] = useState(false);
 
   const filteredSecrets = useMemo(
     () => {
@@ -41,25 +51,49 @@ const SecretsPage = () => {
   }
 
   const getMySecrets = async () => {
+    setShowLoader(true);
     const mySecrets = await getMySecretsApi(user?.token);
 
     if(mySecrets.errors){
       if(mySecrets.type.toLowerCase() == "forbidden"){
+        setShowLoader(false);
         clearCacheAndRedirect();
         return;
       }
       if(mySecrets.type.toLowerCase() == "notfound"){
+        setShowLoader(false);
         return;
       }
-      alert(mySecrets.errors.join(','));
+      setAlertDetails({
+        title: '',
+        text: mySecrets.errors.join(','),
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
+      setShowLoader(false);
       return;
     }
-
+    
+    setShowLoader(false);
     setMySecrets([...mySecrets]);
   }
 
   const showSecret = (id: string) => {
     setCurrentSecret(mySecrets?.filter(item => item.id === id)[0]);
+  }
+
+  const deleteSecret = async (id: string) => {
+    const deleteSecretResponse = await deleteSecretApi(id, user?.token!);
+
+    if(deleteSecretResponse.errors){
+      alert(deleteSecretResponse.errors.join(','));
+    }
+
+    let otherSecrets = mySecrets?.filter(x => x.id !== id);
+    if(!otherSecrets){
+      otherSecrets = [];
+    }
+    setMySecrets([...otherSecrets]);
   }
 
   useEffect(() => {
@@ -74,18 +108,37 @@ const SecretsPage = () => {
   }
 
   const saveMySecret = async (secret:Secret) => {
-    const saveSecretResponse = await saveMySecretsApi(secret, user?.token)
+    setShowLoader(true);
+    const saveSecretResponse = await saveMySecretsApi(secret, user?.token!)
 
     if(saveSecretResponse.errors){
-      alert(saveSecretResponse.errors[0]);
+      setShowLoader(false);
+      setAlertDetails({
+        title: '',
+        text: saveSecretResponse.errors.join(','),
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
-
-    alert('Your secret has been successfully saved!');
-    setMySecrets((prev) => {
-      return [...prev!, {id: secret.id, key: secret.key}];
+    setShowLoader(false);
+    setAlertDetails({
+      title: '',
+      text: 'Your secret has been successfully saved!',
+      type: AlertType.success,
+      show: alertDetails.show+1
     });
+    let otherSecrets = mySecrets?.filter(x => x.id !== secret.id);
+    if(!otherSecrets){
+      otherSecrets = [{id: secret.id, key: secret.key}];
+    }
+    else{
+      otherSecrets.push({id: secret.id, key: secret.key});
+    }
+    setMySecrets([...otherSecrets]);
     closeAddSecretPopup();
+
+    setViewedSecrets(secret);
   }
 
   return (
@@ -117,7 +170,7 @@ const SecretsPage = () => {
                 </span>
                 <span className='secret-actions'>
                   <img src={showIcon} alt="show secret" onClick={() => showSecret(x.id)} />
-                  <img src={deleteIcon} alt="delete secret" />
+                  <img src={deleteIcon} alt="delete secret" onClick={() => deleteSecret(x.id)} />
                 </span>
               </div>
             )
@@ -137,6 +190,8 @@ const SecretsPage = () => {
         :
         <></>
       }
+      <Alert title={alertDetails.title} text={alertDetails.text} type={alertDetails.type} show={alertDetails.show} />
+      <Loader showLoader={showLoader}/>
     </>
   )
 }

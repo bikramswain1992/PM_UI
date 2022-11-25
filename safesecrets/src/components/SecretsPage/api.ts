@@ -16,7 +16,7 @@ export const getMySecretsApi = async (token: string | undefined) => {
   return mySecrets;
 }
 
-export const saveMySecretsApi = async (secret: MySecrets, token?: string) => {
+export const saveMySecretsApi = async (secret: MySecrets, token: string) => {
   const saveResponse = await fetch(SetSecretAPI, {
     method: 'POST',
     mode: 'cors',
@@ -32,7 +32,7 @@ export const saveMySecretsApi = async (secret: MySecrets, token?: string) => {
   return saveResponse;
 }
 
-export const readSecretApi = async (id?: string, token?: string) => {
+export const readSecretApi = async (id: string, token: string) => {
   const readResponse = await fetch(ReadSecretAPI, {
     method: 'POST',
     mode: 'cors',
