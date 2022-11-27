@@ -64,8 +64,8 @@ const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
     setShowLoader(true);
     registerDetails.id = uuid();
     const registerResponse = await registerUserApi(registerDetails);
-
     setShowLoader(false);
+
     if(registerResponse.errors){
       if(registerResponse.errors[0].toLowerCase() === 'duplicate'){
         setAlertDetails({
@@ -87,7 +87,7 @@ const Register: React.FC<RegisterProps> = ({setSignInPopup, setShowLogin}) => {
 
     setAlertDetails({
       title: '',
-      text: 'Registration successful! Please check your inbox to verify your account.',
+      text: 'Registration successful!',
       type: AlertType.success,
       show: alertDetails.show+1
     });

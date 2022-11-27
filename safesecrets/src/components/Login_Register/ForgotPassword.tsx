@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { AlertProps, AlertType } from '../../utility/globaltypes';
+import Alert from '../common/Alert/Alert';
+import Loader from '../common/Loader/Loader';
 import { resetPasswordRequestApi } from './api';
 import { ForgotPasswordProps } from './types';
 
@@ -7,16 +10,38 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({setSignInPopup}) => {
   const [email, setEmail] = useState('');
   const [isResetSuccess, setIsResetSuccess] = useState(false);
 
+  const [alertDetails, setAlertDetails] = useState<AlertProps>({
+    title: '',
+    text: '',
+    type: AlertType.success,
+    show: 0
+  });
+
+  const [showLoader, setShowLoader] = useState(false);
+
   const resetPasswordRequest = async () => {
     if(!email){
-      alert("Email is required.");
+      setAlertDetails({
+        title: '',
+        text: 'Email is required.',
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
       return;
     }
-    const resetRequestResponse = await resetPasswordRequestApi(email);
 
+    setShowLoader(true);
+    const resetRequestResponse = await resetPasswordRequestApi(email);
+    setShowLoader(false);
+    
     if(resetRequestResponse.errors){
       if(resetRequestResponse.type.toLowerCase() === 'notfound'){
-        alert('Email is not registered with SafeSecrets');
+        setAlertDetails({
+          title: '',
+          text: 'Email is not registered with SafeSecrets',
+          type: AlertType.error,
+          show: alertDetails.show+1
+        });
         return;
       }
       alert(resetRequestResponse.errors.join(','));
@@ -64,6 +89,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({setSignInPopup}) => {
           Back to login
         </a>
       </div>
+      <Alert title={alertDetails.title} text={alertDetails.text} type={alertDetails.type} show={alertDetails.show} />
+      <Loader showLoader={showLoader}/>
     </>
   )
 }

@@ -1,4 +1,4 @@
-// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Fira+Sans");
 
 :root{
   --clr-white-200: #E4E4E4;
@@ -14,11 +14,12 @@
 
   --fs-200: 0.75rem;
   --fs-300: 0.85rem;
-  --fs-400: 0.925rem;
-  --fs-600: 1rem;
-  --fs-700: 1.25rem;
-  --fs-800: 1.5rem;
-  --fs-1000: 2.5rem;
+  --fs-400: 0.95rem;
+  --fs-600: 1.15rem;
+  --fs-700: 1.35rem;
+  --fs-800: 1.65rem;
+  --fs-1000: 2.75rem;
+  --fs-2000: 10rem;
 
   --fw-400: 400;
   --fw-500: 500;
@@ -31,8 +32,8 @@ body{
 	padding: 0;
 	border: 0;
 	font-size: var(--fs-400);
-	font-family: 'Roboto', sans-serif;
-  font-weight: var(--fw-400);
+	font-family: "Fira Sans", sans-serif;
+  font-weight: var(--fw-500);
   line-height: 1;
   box-sizing: border-box;
   height: 100vh;

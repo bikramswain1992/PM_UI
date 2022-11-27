@@ -52,9 +52,9 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
     setShowLoader(true);
 
     const userDetails = await loginApi(loginDetails);
+    setShowLoader(false);
 
     if(userDetails.errors){
-      setShowLoader(false);
       setAlertDetails({
         title: '',
         text: userDetails.errors.join(','),
@@ -87,9 +87,9 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
 
     setShowLoader(true);
     const userDetails = await loginViaIdentityProviderApi(loginViaIdentityDetails);
+    setShowLoader(false);
 
     if(userDetails.errors){
-      setShowLoader(false);
       setAlertDetails({
         title: '',
         text: userDetails.errors.join(','),
@@ -103,11 +103,15 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
   }
 
   const googleLoginError = (err: any) => {
-    console.log(err);
+    setAlertDetails({
+      title: '',
+      text: err,
+      type: AlertType.error,
+      show: alertDetails.show+1
+    });
   }
 
   const postLoginActions = (userDetails: any, loginType: string) => {
-    setShowLoader(false);
     userDetails['loginType'] = loginType;
     setUser(userDetails);
     setLoginStatusChange(true);

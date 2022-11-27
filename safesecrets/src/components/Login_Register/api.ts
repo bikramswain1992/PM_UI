@@ -1,4 +1,4 @@
-import { LoginAPI, RegisterUserAPI, ResetPasswordRequestAPI, LoginViaIdentityProviderAPI } from '../../utility/passwordmanagerapis';
+import { LoginAPI, RegisterUserAPI, ResetPasswordRequestAPI, LoginViaIdentityProviderAPI, ResetPasswordAPI } from '../../utility/passwordmanagerapis';
 import {LoginDetails, LoginIdentityProviderDetails} from './types';
 import { RegisterDetails } from './Register';
 

@@ -5,6 +5,8 @@ import LoginRegister from "./components/Login_Register/LoginRegister";
 import LandingPage from './components/LandingPage/LandingPage';
 import {Routes, Route} from 'react-router-dom';
 import SecretsPage from './components/SecretsPage/SecretsPage';
+import ResetPassword from './components/ResetPassword/ResetPassword';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
 
@@ -25,7 +27,8 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage />}></Route>
           <Route path='/mysecrets' element={<SecretsPage />}></Route>
-          
+          <Route path='/reset-password/*' element={<ResetPassword />}></Route>
+          <Route path='*' element={<NotFound />}></Route>
         </Routes>
       </div>
       <Footer></Footer>
