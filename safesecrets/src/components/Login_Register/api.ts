@@ -1,6 +1,6 @@
 import { LoginAPI, RegisterUserAPI, ResetPasswordRequestAPI, LoginViaIdentityProviderAPI, ResetPasswordAPI } from '../../utility/passwordmanagerapis';
 import {LoginDetails, LoginIdentityProviderDetails} from './types';
-import { RegisterDetails } from './Register';
+import { RegisterDetails } from './types';
 
 export const loginApi = async (loginDetails: LoginDetails) => {
   const userDetails = await fetch(LoginAPI, {

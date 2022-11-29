@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
-import {User, getUser, clearCacheAndRedirect} from '../../utility/session';
+import { getUser, clearCacheAndRedirect} from '../../utility/session';
+import {User} from '../../utility/globaltypes';
 import UserGoogleLogout from './UserGoogleLogout';
 import UserLogout from './UserLogout';
 import '../../css/header.scss';
@@ -7,8 +8,9 @@ import logo from '../../images/logo.svg';
 import userIcon from '../../images/user.svg';
 import badgeIcon from '../../images/badge.svg';
 import mailIcon from '../../images/mail.svg';
+import { HeaderProps } from './types';
 
-const Header = ({setShowLogin, loginStatusChange}) => {
+const Header: React.FC<HeaderProps> = ({setShowLogin, loginStatusChange}) => {
 
   const[user, setUser] = useState<(User | undefined)>(getUser());
   const [userName, setUserName] = useState({

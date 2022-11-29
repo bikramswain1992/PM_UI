@@ -103,12 +103,14 @@ const Login: React.FC<LoginProps> = ({setSignInPopup, setShowLogin, setLoginStat
   }
 
   const googleLoginError = (err: any) => {
-    setAlertDetails({
-      title: '',
-      text: err,
-      type: AlertType.error,
-      show: alertDetails.show+1
-    });
+    if(err.details){
+      setAlertDetails({
+        title: '',
+        text: err.details,
+        type: AlertType.error,
+        show: alertDetails.show+1
+      });
+    }
   }
 
   const postLoginActions = (userDetails: any, loginType: string) => {

@@ -2,12 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/images/Logo.svg" />
+    <link rel="icon" type="image/png" href="/src/images/Logo512.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Safe Secrets" />
+    <link rel="apple-touch-icon" href="/src/images/Logo512.png" />
+    <link rel="manifest" href="./manifest.json" />
     <title>Safe Secrets</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if('serviceWorker' in navigator){
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./serviceWorker.js').then((reg) => {
+            console.log('Worker Registerred');
+          }).catch((err)=>{
+            console.log('Error is service worker', err);
+          })
+        })
+      }
+    </script>
   </body>
 </html>

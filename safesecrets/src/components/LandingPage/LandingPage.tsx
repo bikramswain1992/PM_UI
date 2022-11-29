@@ -3,10 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/landingpage.scss';
 import secure1 from '../../images/secure1.svg';
 import { getUser } from '../../utility/session';
+import useImagePreloader from '../hooks/useImagePreLoader';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(getUser());
+
+  const preloadSrcList: string[] = [
+    secure1
+  ];
+
+  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
 
   useEffect(()=>{
     if(user){
@@ -26,12 +33,12 @@ const LandingPage = () => {
       </div>
       <div className="about">
         <div className="headings">
+          <span>Safe</span>
           <span>Secure</span>
-          <span>Encrypted</span>
-          <span>Accessible</span>
+          <span>Simple</span>
         </div>
         <div className="statement">
-          With <span className='text-clr-primary'>SafeSecure</span>'s advanced encryption keep all your passwords and important documents secured and out of reach of snoopers. Conveniently access your data on the go, anywhere anytime.
+          With <strong><span className='text-clr-primary'>SafeSecure</span></strong>'s advanced encryption keep all your passwords and important documents secured and out of reach of snoopers. Conveniently access your data on the go, anywhere anytime.
         </div>
       </div>
     </>
