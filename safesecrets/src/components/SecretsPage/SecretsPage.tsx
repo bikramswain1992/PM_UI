@@ -147,41 +147,58 @@ const SecretsPage = () => {
   };
 
   return (
-    <>
-      <SecretFilter searchKey={searchKey} setSearchKey={setSearchKey} addSecret={addSecret} />
+    <div>
       {
-        filteredSecrets
+        user
           ? (
-            <div className="my-secrets-main">
-              {
-                filteredSecrets.map((x) => (
-                  <SecretTabBar secret={x} showSecret={showSecret} deleteSecret={deleteSecret} />
-                ))
-              }
-            </div>
-          )
-          : (
-            <div className="no-secrets-message">
-              You don&apos;t have any secrets. Start adding now.
-            </div>
-          )
-      }
-      {
-        showSecretPopup
-          ? (
-            <Popup customClass="add-secret-popup">
-              <SecretPopup
-                secret={currentSecret}
-                closeSecretPopup={closeAddSecretPopup}
-                saveMySecret={saveMySecret}
-                token={user?.token}
+            <>
+              <SecretFilter
+                searchKey={searchKey}
+                setSearchKey={setSearchKey}
+                addSecret={addSecret}
               />
-            </Popup>
+              {
+                filteredSecrets
+                  ? (
+                    <div className="my-secrets-main">
+                      {
+                        filteredSecrets.map((x) => (
+                          <SecretTabBar
+                            key={x.id}
+                            secret={x}
+                            showSecret={showSecret}
+                            deleteSecret={deleteSecret}
+                          />
+                        ))
+                      }
+                    </div>
+                  )
+                  : (
+                    <div className="no-secrets-message">
+                      You don&apos;t have any secrets. Start adding now.
+                    </div>
+                  )
+              }
+              {
+                showSecretPopup
+                  ? (
+                    <Popup customClass="add-secret-popup">
+                      <SecretPopup
+                        secret={currentSecret}
+                        closeSecretPopup={closeAddSecretPopup}
+                        saveMySecret={saveMySecret}
+                        token={user?.token}
+                      />
+                    </Popup>
+                  )
+                  : <div />
+              }
+              <Loader showLoader={showLoader} />
+            </>
           )
           : <div />
       }
-      <Loader showLoader={showLoader} />
-    </>
+    </div>
   );
 };
 
