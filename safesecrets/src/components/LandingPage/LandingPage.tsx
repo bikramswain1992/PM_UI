@@ -1,31 +1,28 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../utility/session';
 import '../../css/landingpage.scss';
 import secure1 from '../../images/secure1.svg';
-import { getUser } from '../../utility/session';
-import useImagePreloader from '../hooks/useImagePreLoader';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(getUser());
+  const user = getUser();
 
-  const preloadSrcList: string[] = [
-    secure1
-  ];
-
-  const { imagesPreloaded } = useImagePreloader(preloadSrcList);
-
-  useEffect(()=>{
-    if(user){
+  useEffect(() => {
+    if (user) {
       navigate('/mysecrets');
     }
-  },[user]);
+  }, [user]);
 
   return (
     <>
-      <div className='message-content'>
+      <div className="message-content">
         <div className="message">
-          Your <span className='text-clr-primary'>secrets</span> have never been safer!
+          Your&nbsp;
+          <span className="text-clr-primary">
+            secrets
+          </span>
+          &nbsp;have never been safer!
         </div>
         <div className="secure-message">
           <img src={secure1} alt="Security image" />
@@ -38,11 +35,19 @@ const LandingPage = () => {
           <span>Simple</span>
         </div>
         <div className="statement">
-          With <strong><span className='text-clr-primary'>SafeSecure</span></strong>'s advanced encryption keep all your passwords and important documents secured and out of reach of snoopers. Conveniently access your data on the go, anywhere anytime.
+          With&nbsp;
+          <strong>
+            <span className="text-clr-primary">
+              SafeSecure
+            </span>
+          </strong>
+          &apos;s advanced encryption keep all your passwords and important&nbsp;
+          documents secured and out of reach of snoopers.&nbsp;
+          Conveniently access your data on the go, anywhere anytime.
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default LandingPage;

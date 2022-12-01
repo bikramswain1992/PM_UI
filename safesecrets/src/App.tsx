@@ -1,59 +1,70 @@
-import {useState, Suspense, lazy} from 'react';
-import Header from "./components/Header/Header";
+import React, { useState, Suspense, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-// import LoginRegister from "./components/Login_Register/LoginRegister";
 import LandingPage from './components/LandingPage/LandingPage';
-import {Routes, Route} from 'react-router-dom';
 import SecretsPage from './components/SecretsPage/SecretsPage';
 import ResetPassword from './components/ResetPassword/ResetPassword';
-// import NotFound from './components/NotFound/NotFound';
+import Loader from './components/common/Loader/Loader';
 
-function App() {
-
-  const LoginRegister = lazy(() => import("./components/Login_Register/LoginRegister"));
-  const NotFound = lazy(() => import("./components/NotFound/NotFound"));
+const App = () => {
+  const LoginRegister = lazy(() => import('./components/Login_Register/LoginRegister'));
+  const NotFound = lazy(() => import('./components/NotFound/NotFound'));
 
   const [showLogin, setShowLogin] = useState(false);
   const [loginStatusChange, setLoginStatusChange] = useState(false);
 
+  const getRoutes = () => (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route
+        path="/mysecrets"
+        element={(
+          <Suspense fallback={<Loader showLoader />}>
+            <SecretsPage />
+          </Suspense>
+          )}
+      />
+      <Route
+        path="/reset-password/*"
+        element={(
+          <Suspense fallback={<Loader showLoader />}>
+            <ResetPassword />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="*"
+        element={(
+          <Suspense fallback={<Loader showLoader />}>
+            <NotFound />
+          </Suspense>
+        )}
+      />
+    </Routes>
+  );
+
   return (
-    <div className='main-content'>
+    <div className="main-content">
       <Header setShowLogin={setShowLogin} loginStatusChange={loginStatusChange} />
       <div className="container">
         {
           showLogin
-          ?
-          <Suspense fallback={<>Loading...</>} >
-            <LoginRegister setShowLogin={setShowLogin} setLoginStatusChange={setLoginStatusChange}/>
-          </Suspense>
-          :
-          <></>
-        }
-        <Routes>
-          <Route path='/' element={<LandingPage />}></Route>
-          <Route path='/mysecrets' 
-            element={
-              <Suspense fallback={<>Loading...</>}>
-                <SecretsPage />
+            ? (
+              <Suspense fallback={<Loader showLoader />}>
+                <LoginRegister
+                  setShowLogin={setShowLogin}
+                  setLoginStatusChange={setLoginStatusChange}
+                />
               </Suspense>
-            }></Route>
-          <Route path='/reset-password/*' 
-            element={
-            <Suspense fallback={<>Loading...</>}>
-              <ResetPassword />
-            </Suspense>
-          }></Route>
-          <Route path='*' 
-            element={
-            <Suspense fallback={<>Loading...</>}>
-              <NotFound/>
-            </Suspense>
-          }></Route>
-        </Routes>
+            )
+            : <div />
+        }
+        {getRoutes()}
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

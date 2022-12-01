@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LoaderImg from '../../../images/loading.gif';
 import { LoaderProps } from '../../../utility/globaltypes';
+import '../../../css/popup.scss';
 
-const Loader: React.FC<LoaderProps> = ({showLoader}) => {
-  return (
-    showLoader
-    ?
-    <>
-      <div className='popup-cover'></div>
-      <img className='loader-image' src={LoaderImg} alt='Loading' />
-    </>
-    :
-    <></>
-  )
-}
+const Loader: React.FC<LoaderProps> = ({ showLoader }) => (
+  showLoader
+    ? (
+      <>
+        <div className="popup-cover" />
+        <img className="loader-image" src={LoaderImg} alt="Loading" />
+      </>
+    )
+    : <div />
+);
 
 export default Loader;

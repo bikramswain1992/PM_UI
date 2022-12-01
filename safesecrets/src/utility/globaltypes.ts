@@ -18,21 +18,6 @@ export type SafeSecretSession = {
   usr?: User,
   secrets?: string
 }
-
-export interface AlertProps {
-  title?: string,
-  text?: string,
-  type: AlertType,
-  show: number
-}
-export enum AlertType {
-  error,
-  success,
-  warning,
-  info,
-  question
-}
-
 export interface LoaderProps {
   showLoader: boolean
 }

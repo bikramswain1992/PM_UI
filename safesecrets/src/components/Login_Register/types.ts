@@ -1,5 +1,4 @@
-import ForgotPassword from "./ForgotPassword"
-
+/* eslint-disable no-unused-vars */
 export type LoginDetails = {
   email: string,
   password: string
