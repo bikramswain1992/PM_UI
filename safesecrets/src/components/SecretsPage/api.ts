@@ -1,6 +1,7 @@
 import {
   DeleteSecretAPI, GetMySecretsAPI, ReadSecretAPI, SetSecretAPI,
 } from '../../utility/passwordmanagerapis';
+import handleApiResponse from '../../utility/apiErrorHandler';
 import { MySecrets } from './types';
 
 export const getMySecretsApi = async (token: string | undefined) => {
@@ -12,8 +13,8 @@ export const getMySecretsApi = async (token: string | undefined) => {
       Authorization: `Bearer ${token}`,
     },
     redirect: 'follow',
-  }).then((resp) => resp.json())
-    .catch((err) => err.json());
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return mySecrets;
 };
@@ -28,8 +29,8 @@ export const saveMySecretsApi = async (secret: MySecrets, token: string) => {
     },
     redirect: 'follow',
     body: JSON.stringify(secret),
-  }).then((resp) => resp.json())
-    .catch((err) => err.json());
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return saveResponse;
 };
@@ -44,8 +45,8 @@ export const readSecretApi = async (id: string, token: string) => {
     },
     redirect: 'follow',
     body: JSON.stringify({ secretId: id }),
-  }).then((resp) => resp.json())
-    .catch((err) => err.json());
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return readResponse;
 };
@@ -60,8 +61,8 @@ export const deleteSecretApi = async (id: string, token: string) => {
     },
     redirect: 'follow',
     body: JSON.stringify({ secretId: id }),
-  }).then((resp) => resp.json())
-    .catch((err) => err.json());
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return deleteResponse;
 };

@@ -1,4 +1,5 @@
 import { ResetPasswordAPI } from '../../utility/passwordmanagerapis';
+import handleApiResponse from '../../utility/apiErrorHandler';
 import { ResetPasswordDetails } from './types';
 
 const resetPasswordApi = async (resetPasswordDetails: ResetPasswordDetails) => {
@@ -11,9 +12,8 @@ const resetPasswordApi = async (resetPasswordDetails: ResetPasswordDetails) => {
     redirect: 'follow',
     body: JSON.stringify(resetPasswordDetails),
   })
-    .then((resp) => resp.json())
-    .catch((err) => err.json());
-
+    .then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
   return resetRequestResponse;
 };
 

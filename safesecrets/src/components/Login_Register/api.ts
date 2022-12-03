@@ -1,6 +1,7 @@
 import {
   LoginAPI, RegisterUserAPI, ResetPasswordRequestAPI, LoginViaIdentityProviderAPI,
 } from '../../utility/passwordmanagerapis';
+import handleApiResponse from '../../utility/apiErrorHandler';
 import { LoginDetails, LoginIdentityProviderDetails, RegisterDetails } from './types';
 
 export const loginApi = async (loginDetails: LoginDetails) => {
@@ -13,8 +14,8 @@ export const loginApi = async (loginDetails: LoginDetails) => {
     redirect: 'follow',
     body: JSON.stringify(loginDetails),
   })
-    .then((resp) => resp.json())
-    .catch((err) => err.json());
+    .then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return userDetails;
 };
@@ -29,8 +30,8 @@ export const loginViaIdentityProviderApi = async (loginDetails: LoginIdentityPro
     redirect: 'follow',
     body: JSON.stringify(loginDetails),
   })
-    .then((resp) => resp.json())
-    .catch((err) => err.json());
+    .then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return userDetails;
 };
@@ -45,8 +46,8 @@ export const registerUserApi = async (registerDetails: RegisterDetails) => {
     redirect: 'follow',
     body: JSON.stringify(registerDetails),
   })
-    .then((resp) => resp.json())
-    .catch((err) => err.json());
+    .then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return registerResponse;
 };
@@ -61,8 +62,8 @@ export const resetPasswordRequestApi = async (email: string) => {
     redirect: 'follow',
     body: JSON.stringify({ email }),
   })
-    .then((resp) => resp.json())
-    .catch((err) => err.json());
+    .then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
 
   return resetRequestResponse;
 };

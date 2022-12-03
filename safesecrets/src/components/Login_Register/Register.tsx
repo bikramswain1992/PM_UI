@@ -42,7 +42,7 @@ const Register: React.FC<RegisterProps> = ({ setSignInPopup, setShowLogin }) => 
       return;
     }
 
-    const regex = /(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*?])/;
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*?])/;
     if (!regex.test(registerDetails.password)) {
       MySwal.fire({
         text: 'Password should contain atleast one lower case alphabet, one upper case  alphabet, one number, one special character (-+_!@#$%^&*?) and should be atleast 8 characters long.',

@@ -10,10 +10,10 @@
 }
 
 .popup{
-  position: absolute;
+  position: fixed;
   z-index: 10;
   margin-top: 3%;
-  top: 50%;
+  top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 360px;
@@ -26,6 +26,7 @@
   box-shadow: 1px 1px 4px var(--clr-white-200);
   border: 2px solid var(--clr-white-200);
   z-index: 101;
+  overflow-y: scroll;
 }
 
 .popup-header{
