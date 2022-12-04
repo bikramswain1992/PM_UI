@@ -9,7 +9,7 @@
     "copy_pwa": "copyfiles -u 2 \"./src/pwa/*\" ./dist/",
     "copy_logo": "copyfiles -u 2 \"./src/images/Logo512.png\" ./dist/assets/src/images/",
     "copy_assets": "npm run copy_pwa & npm run copy_logo",
-    "publish": "npm run build & npm run copy_assets"
+    "publish": "npm run build && npm run copy_assets"
   },
   "dependencies": {
     "gapi-script": "^1.2.0",
