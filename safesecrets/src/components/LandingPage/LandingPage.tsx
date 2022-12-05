@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../utility/session';
 import '../../css/landingpage.scss';
 import secureImage from '../../images/secure1.svg';
-import dataImage from '../../images/mobile.svg';
-import layer1EncryptionImage from '../../images/encryption-layer1.svg';
-import layer2EncryptionImage from '../../images/encryption-layer2.svg';
-import databaseImage from '../../images/database.svg';
+import pwa from '../../images/pwa.mp4';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -152,7 +149,9 @@ const LandingPage = () => {
           <span>Enjoy the benefits of mobile experience with PWA</span>
         </div>
         <div className="pwa-images">
-          <video muted src="https://www.youtube.com/watch?v=qtrRqzbXFtE" />
+          <video muted autoPlay={false} controls width={270} height={380}>
+            <source src={pwa} type="video/mp4" />
+          </video>
         </div>
       </section>
     </>

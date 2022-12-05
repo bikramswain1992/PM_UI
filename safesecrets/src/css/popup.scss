@@ -16,7 +16,7 @@
   top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 360px;
+  width: 320px;
   height: 500px;
   background-color: var(--clr-white-400);
   overflow-y: auto;
@@ -26,7 +26,6 @@
   box-shadow: 1px 1px 4px var(--clr-white-200);
   border: 2px solid var(--clr-white-200);
   z-index: 101;
-  overflow-y: scroll;
 }
 
 .popup-header{
