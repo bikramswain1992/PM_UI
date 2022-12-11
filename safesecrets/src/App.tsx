@@ -10,6 +10,7 @@ import Loader from './components/common/Loader/Loader';
 const App = () => {
   const LoginRegister = lazy(() => import('./components/Login_Register/LoginRegister'));
   const NotFound = lazy(() => import('./components/NotFound/NotFound'));
+  const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy/PrivacyPolicy'));
 
   const [showLogin, setShowLogin] = useState(false);
   const [loginStatusChange, setLoginStatusChange] = useState(false);
@@ -30,6 +31,14 @@ const App = () => {
         element={(
           <Suspense fallback={<Loader showLoader />}>
             <ResetPassword />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/privacypolicy"
+        element={(
+          <Suspense fallback={<Loader showLoader />}>
+            <PrivacyPolicy />
           </Suspense>
         )}
       />

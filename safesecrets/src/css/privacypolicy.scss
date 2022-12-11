@@ -1,0 +1,13 @@
+.privacy-policy{
+  text-align: justify;
+  line-height: 1.5;
+  h3 {
+    font-size: var(--fs-600);
+  }
+  ul > li {
+    list-style: disc;
+  }
+  a{
+    text-decoration: underline;
+  }
+}
