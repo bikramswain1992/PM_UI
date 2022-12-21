@@ -44,18 +44,29 @@ const SecretList: React.FC<SecretListProps> = (
       {
         pagedSecrets
           ? (
-            <div className="my-secrets-main">
-              {
-              pagedSecrets.map((x) => (
-                <SecretTabBar
-                  key={x.id}
-                  secret={x}
-                  showSecret={showSecret}
-                  deleteSecret={deleteSecret}
-                />
-              ))
-            }
-            </div>
+            <>
+              <div className="my-secrets-main">
+                {
+                pagedSecrets.map((x) => (
+                  <SecretTabBar
+                    key={x.id}
+                    secret={x}
+                    showSecret={showSecret}
+                    deleteSecret={deleteSecret}
+                  />
+                ))
+              }
+              </div>
+              <div className="page-info">
+                <span className="nav-link text-sm" onClick={() => changePage(-1)}>« Prev</span>
+                <span className="nav-link text-sm" onClick={() => changePage(1)}>Next »</span>
+                <span className="nav-link text-sm">
+                  {
+                    getPageInfo()
+                  }
+                </span>
+              </div>
+            </>
           )
           : (
             <div className="no-secrets-message">
@@ -63,15 +74,6 @@ const SecretList: React.FC<SecretListProps> = (
             </div>
           )
       }
-      <div className="page-info">
-        <span className="nav-link text-sm" onClick={() => changePage(-1)}>« Prev</span>
-        <span className="nav-link text-sm" onClick={() => changePage(1)}>Next »</span>
-        <span className="nav-link text-sm">
-          {
-            getPageInfo()
-          }
-        </span>
-      </div>
     </div>
   );
 };
