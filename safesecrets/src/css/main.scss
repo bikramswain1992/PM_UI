@@ -11,6 +11,7 @@
   --clr-primary-dark: #DB342C;
   --clr-text-secondary: #9b9b9b;
   --clr-body: #f9f9f9;
+  --clr-success: #04b104;
 
   --fs-200: 0.75rem;
   --fs-300: 0.85rem;
@@ -36,7 +37,6 @@ body{
   font-weight: var(--fw-500);
   line-height: 1;
   box-sizing: border-box;
-  // height: 100vh;
   background-color: var(--clr-body);
   position: relative;
 }
@@ -149,7 +149,7 @@ a{
 .btn-secondary:hover{
  background-color: var(--clr-black-100);
 }
-.input-group-vertical{
+.input-group-vertical, .input-group-flexible{
   display: flex;
   flex-direction: column;
   width: 95%;
@@ -204,6 +204,15 @@ input:focus, select:focus, textarea:focus{
 .text-clr-grey{
   color: var(--clr-black-200);
 }
+.text-italic{
+  font-style: italic;
+}
+.clr-success{
+  color: var(--clr-success);
+}
+.clr-danger{
+  color: var(--clr-primary-dark);
+}
 
 /*
 Swal css
@@ -221,5 +230,21 @@ Swal css
 @media only screen and (min-width: 768px){
   .container{
     width: 75%;
+  }
+
+  .input-group-flexible{
+    flex-direction: row;
+    align-items: center;
+    
+    *:nth-child(1){
+      width: 30%;
+    }
+    *:not(:first-child){
+      width: 70%;
+    }
+
+    select{
+      max-width: none;
+    }
   }
 }

@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="left-content">
           Copy right ©
-          <span className="text-clr-primary">SafeSecrets</span>
+          <span className="text-clr-primary">&nbsp;SafeSecrets&nbsp;</span>
           {new Date().getFullYear()}
         </div>
         <div className="right-content">

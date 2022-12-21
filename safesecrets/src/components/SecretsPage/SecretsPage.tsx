@@ -5,9 +5,9 @@ import SecretPopup from './SecretPopup';
 import Popup from '../common/popup/Popup';
 import Loader from '../common/Loader/Loader';
 import SecretFilter from './SecretFilter';
-import SecretTabBar from './SecretTabBar';
+import SecretList from '../common/SecretList/SecretList';
 import {
-  getUser, clearCacheAndRedirect, setViewedSecrets, setViewedSecretsWithDelete 
+  getUser, clearCacheAndRedirect, setViewedSecrets, setViewedSecretsWithDelete,
 } from '../../utility/session';
 import { deleteSecretApi, getMySecretsApi, saveMySecretsApi } from './api';
 import { Secret } from '../../utility/globaltypes';
@@ -36,15 +36,14 @@ const SecretsPage = () => {
   const getMySecrets = async () => {
     setShowLoader(true);
     const mySecretsResponse = await getMySecretsApi(user?.token);
+    setShowLoader(false);
 
     if (mySecretsResponse.errors) {
       if (mySecretsResponse.type.toLowerCase() === 'forbidden') {
-        setShowLoader(false);
         clearCacheAndRedirect();
         return;
       }
       if (mySecretsResponse.type.toLowerCase() === 'notfound') {
-        setShowLoader(false);
         return;
       }
       MySwal.fire({
@@ -52,11 +51,10 @@ const SecretsPage = () => {
         icon: 'error',
         confirmButtonText: 'Ok',
       });
-      setShowLoader(false);
+
       return;
     }
 
-    setShowLoader(false);
     setMySecrets([...mySecretsResponse]);
   };
 
@@ -157,28 +155,13 @@ const SecretsPage = () => {
                 setSearchKey={setSearchKey}
                 addSecret={addSecret}
               />
-              {
-                filteredSecrets
-                  ? (
-                    <div className="my-secrets-main">
-                      {
-                        filteredSecrets.map((x) => (
-                          <SecretTabBar
-                            key={x.id}
-                            secret={x}
-                            showSecret={showSecret}
-                            deleteSecret={deleteSecret}
-                          />
-                        ))
-                      }
-                    </div>
-                  )
-                  : (
-                    <div className="no-secrets-message">
-                      You don&apos;t have any secrets. Start adding now.
-                    </div>
-                  )
-              }
+              <SecretList
+                pageLength={10}
+                secrets={filteredSecrets}
+                message="You don't have any secrets. Start adding now."
+                showSecret={showSecret}
+                deleteSecret={deleteSecret}
+              />
               {
                 showSecretPopup
                   ? (

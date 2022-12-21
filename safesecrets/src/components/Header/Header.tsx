@@ -4,13 +4,16 @@ import { User } from '../../utility/globaltypes';
 import UserGoogleLogout from './UserGoogleLogout';
 import UserLogout from './UserLogout';
 import { HeaderProps } from './types';
+import { useNavigate } from 'react-router-dom';
 import '../../css/header.scss';
 import logo from '../../images/Logo.svg';
 import userIcon from '../../images/user.svg';
 import badgeIcon from '../../images/badge.svg';
 import mailIcon from '../../images/mail.svg';
+import profileIcon from '../../images/profile.svg';
 
 const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<(User | undefined)>(getUser());
   const [userName, setUserName] = useState({
     name: '',
@@ -44,6 +47,11 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
     setShowUserDetails((prev) => !prev);
   };
 
+  const editUserProfile = () => {
+    showHideUserDetails();
+    navigate('/userprofile');
+  };
+
   const getUserOrLogin = () => {
     if (user) {
       return (
@@ -64,6 +72,10 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
                     <div className="user-info" title={user.email}>
                       <img src={mailIcon} alt="email" />
                       <span>{user.email}</span>
+                    </div>
+                    <div className="user-info update-profile" title="Update profile" onClick={editUserProfile}>
+                      <img src={profileIcon} alt="email" />
+                      <span>Update profile</span>
                     </div>
                     {
                   user.loginType === 'normal'

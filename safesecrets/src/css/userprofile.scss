@@ -1,0 +1,39 @@
+.user-profile-details{
+  background-color: var(--clr-white-400);
+  margin: 1rem 0.75rem;
+  box-shadow: 1px 1px 4px var(--clr-white-200);
+  border: 2px solid var(--clr-white-200);
+  border-radius: 0.25rem;
+  padding: 0 0.5rem;
+}
+
+.user-profile-header{
+  font-size: var(--fs-500);
+  height: 2rem;
+  padding: 0.5rem 0rem;
+  border-bottom: 1px solid var(--clr-black-100);
+}
+
+.profile-email{
+  position: relative;
+}
+
+.verification-status{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.user-profile-footer{
+  margin-bottom: 1rem;
+}
+
+@media only screen and (min-width: 768px){
+  .user-profile-header{
+    font-size: var(--fs-600);
+  }
+
+  .verification-status{
+    left: 88%;
+  }
+}
