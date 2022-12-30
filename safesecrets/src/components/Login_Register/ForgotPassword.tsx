@@ -46,7 +46,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ setSignInPopup }) => {
       <div className="popup-header">
         <h4>
           Reset password for&nbsp;
-          <span className="text-clr-primary">SafeSecrets</span>
+          <span className="text-clr-primary"><strong>SafeSecrets</strong></span>
         </h4>
       </div>
       <div className="popup-body">

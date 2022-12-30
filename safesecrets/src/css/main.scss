@@ -9,9 +9,9 @@
   --clr-black-100: #C4C4C4;
   --clr-primary: #FF5722;
   --clr-primary-dark: #DB342C;
-  --clr-text-secondary: #9b9b9b;
-  --clr-body: #f9f9f9;
-  --clr-success: #04b104;
+  --clr-text-secondary: #bababa;
+  --clr-body: #21232D;
+  --clr-success: #1FAF9C;
 
   --fs-200: 0.75rem;
   --fs-300: 0.85rem;
@@ -19,6 +19,7 @@
   --fs-600: 1.15rem;
   --fs-700: 1.35rem;
   --fs-800: 1.65rem;
+  --fs-900: 1.9rem;
   --fs-1000: 2.75rem;
   --fs-2000: 10rem;
 
@@ -38,6 +39,7 @@ body{
   line-height: 1;
   box-sizing: border-box;
   background-color: var(--clr-body);
+  color: var(--clr-white-400);
   position: relative;
 }
 ol, ul {
@@ -68,6 +70,7 @@ input, select, textarea{
   border: none;
   background-image: none;
   background-color:transparent;
+  color: var(--clr-white-400);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -105,7 +108,7 @@ a{
 }
 .container{
   max-width: 1440px;
-  width: 95%;
+  // width: 95%;
   margin: 0 auto;
 }
 .bg-white{
@@ -129,6 +132,7 @@ a{
   transition: all 0.1s ease-in;
 }
 .btn-primary-fade{
+  color: var(--clr-white-400);
   transition: all 0.1s ease-in;
 }
 .btn-primary-fade:hover{
@@ -168,6 +172,9 @@ input, select, textarea{
   border-style: solid;
   font-family: "Fira Sans", sans-serif;
 }
+input::placeholder, select::placeholder, textarea::placeholder{
+  color: var(--clr-text-secondary);
+}
 input, textarea{
   font-size: var(--fs-400);
   line-height: 1.5;
@@ -190,7 +197,7 @@ input:focus, select:focus, textarea:focus{
   color: var(--clr-text-secondary);
 }
 .nav-link:hover{
-  color: var(--clr-black-200);
+  color: var(--clr-white-200);
 }
 .text-sm{
   font-size: var(--fs-200);

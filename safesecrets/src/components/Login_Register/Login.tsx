@@ -114,8 +114,8 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
     <>
       <div className="popup-header">
         <h4>
-          Login to
-          <span className="text-clr-primary">SafeSecrets</span>
+          Login to&nbsp;
+          <span className="text-clr-primary"><strong>SafeSecrets</strong></span>
         </h4>
       </div>
       <div className="popup-body">
