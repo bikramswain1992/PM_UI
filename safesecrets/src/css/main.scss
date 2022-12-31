@@ -9,9 +9,10 @@
   --clr-black-100: #C4C4C4;
   --clr-primary: #FF5722;
   --clr-primary-dark: #DB342C;
-  --clr-text-secondary: #9b9b9b;
-  --clr-body: #f9f9f9;
-  --clr-success: #04b104;
+  --clr-text-secondary: #bababa;
+  --clr-body: #21232D;
+  --clr-body-dark: #2F2E41;
+  --clr-success: #1FAF9C;
 
   --fs-200: 0.75rem;
   --fs-300: 0.85rem;
@@ -19,6 +20,7 @@
   --fs-600: 1.15rem;
   --fs-700: 1.35rem;
   --fs-800: 1.65rem;
+  --fs-900: 1.9rem;
   --fs-1000: 2.75rem;
   --fs-2000: 10rem;
 
@@ -38,6 +40,7 @@ body{
   line-height: 1;
   box-sizing: border-box;
   background-color: var(--clr-body);
+  color: var(--clr-white-400);
   position: relative;
 }
 ol, ul {
@@ -68,6 +71,7 @@ input, select, textarea{
   border: none;
   background-image: none;
   background-color:transparent;
+  color: var(--clr-white-400);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -104,8 +108,7 @@ a{
   min-height: 100vh;
 }
 .container{
-  max-width: 1440px;
-  width: 95%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .bg-white{
@@ -129,6 +132,7 @@ a{
   transition: all 0.1s ease-in;
 }
 .btn-primary-fade{
+  color: var(--clr-white-400);
   transition: all 0.1s ease-in;
 }
 .btn-primary-fade:hover{
@@ -168,6 +172,9 @@ input, select, textarea{
   border-style: solid;
   font-family: "Fira Sans", sans-serif;
 }
+input::placeholder, select::placeholder, textarea::placeholder{
+  color: var(--clr-text-secondary);
+}
 input, textarea{
   font-size: var(--fs-400);
   line-height: 1.5;
@@ -179,6 +186,7 @@ select{
   overflow-x: hidden;
 
   option{
+    background-color: var(--clr-body);
     max-width: 300px;
     overflow-x: hidden;
   }
@@ -190,7 +198,7 @@ input:focus, select:focus, textarea:focus{
   color: var(--clr-text-secondary);
 }
 .nav-link:hover{
-  color: var(--clr-black-200);
+  color: var(--clr-white-200);
 }
 .text-sm{
   font-size: var(--fs-200);
@@ -225,6 +233,12 @@ Swal css
 }
 .swal2-styled.swal2-confirm:focus{
   box-shadow: none !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring{
+  border: .25em solid var(--clr-success);
+}
+.swal2-icon.swal2-success [class^=swal2-success-line]{
+  background-color: var(--clr-success);
 }
 
 @media only screen and (min-width: 768px){

@@ -22,7 +22,9 @@ export type RegisterDetails = {
 
 export interface LoginRegisterProps {
   setShowLogin: (e: boolean) => void,
-  setLoginStatusChange: (e: boolean) => void
+  setLoginStatusChange: (e: boolean) => void,
+  popupType: string,
+  setPopupType: (e: string) => void
 }
 
 export interface RegisterProps {
