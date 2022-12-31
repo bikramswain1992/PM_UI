@@ -26,6 +26,7 @@ const Register: React.FC<RegisterProps> = ({ setSignInPopup, setShowLogin }) => 
 
   const closeRegister = () => {
     setShowLogin(false);
+    setSignInPopup('login');
   };
 
   const registerUser = async () => {
@@ -86,8 +87,8 @@ const Register: React.FC<RegisterProps> = ({ setSignInPopup, setShowLogin }) => 
     <>
       <div className="popup-header">
         <h4>
-          Register on
-          <span className="text-clr-primary">SafeSecrets</span>
+          Register on&nbsp;
+          <span className="text-clr-primary"><strong>SafeSecrets</strong></span>
         </h4>
       </div>
       <div className="popup-body">

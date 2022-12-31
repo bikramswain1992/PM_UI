@@ -15,10 +15,11 @@ const App = () => {
 
   const [showLogin, setShowLogin] = useState(false);
   const [loginStatusChange, setLoginStatusChange] = useState(false);
+  const [popupType, setPopupType] = useState('login');
 
   const getRoutes = () => (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<LandingPage setShowLogin={setShowLogin} setPopupType={setPopupType} />} />
       <Route
         path="/mysecrets"
         element={(
@@ -73,6 +74,8 @@ const App = () => {
                 <LoginRegister
                   setShowLogin={setShowLogin}
                   setLoginStatusChange={setLoginStatusChange}
+                  popupType={popupType}
+                  setPopupType={setPopupType}
                 />
               </Suspense>
             )

@@ -91,11 +91,11 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
       );
     }
 
-    return <button className="btn btn-primary-fade" onClick={loginButtonClick}>Login/Register</button>;
+    return <button className="btn btn-primary-fade" onClick={loginButtonClick}>Login</button>;
   };
 
   return (
-    <header className="bg-white site-header">
+    <header className="site-header">
       <div className="header-content">
         <div className="logo">
           <img className="logo-img" src={logo} alt="Logo" />
