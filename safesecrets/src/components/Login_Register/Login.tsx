@@ -34,6 +34,7 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
 
   const closeLogin = () => {
     setShowLogin(false);
+    setSignInPopup('login');
   };
 
   const postLoginActions = (userDetails: any, loginType: string) => {
@@ -69,6 +70,13 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
     }
 
     postLoginActions(userDetails, 'normal');
+  };
+
+  const handleSubmit = (e: any) => {
+    // e.preventDefault();
+    if (e.keyCode === 13) {
+      login();
+    }
   };
 
   const onChange = (e: any) => {
@@ -139,6 +147,7 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
             placeholder="********"
             value={loginDetails.password}
             onChange={onChange}
+            onKeyDown={handleSubmit}
           />
         </div>
         <div className="other-login-options">

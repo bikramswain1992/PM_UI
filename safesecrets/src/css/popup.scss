@@ -24,8 +24,8 @@
   display: grid;
   grid-template-rows: 10% 75% 15%;
   border-radius: 0.25rem;
-  box-shadow: 1px 1px 4px var(--clr-success);
-  border: 1px solid var(--clr-success);
+  box-shadow: 1px 0px 4px var(--clr-success);
+  // border: 1px solid var(--clr-success);
   z-index: 101;
 }
 

@@ -26,6 +26,7 @@ const Register: React.FC<RegisterProps> = ({ setSignInPopup, setShowLogin }) => 
 
   const closeRegister = () => {
     setShowLogin(false);
+    setSignInPopup('login');
   };
 
   const registerUser = async () => {

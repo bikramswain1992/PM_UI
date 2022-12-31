@@ -90,14 +90,22 @@ const SecretPopup: React.FC<SecretPopupProps> = ({
           isViewMode
             ? (
               <h4>
-                <span className="text-clr-primary">&nbsp;SafeSecrets&nbsp;</span>
+                <span className="text-clr-primary">
+                  &nbsp;
+                  <strong>SafeSecrets</strong>
+                  &nbsp;
+                </span>
                 vault
               </h4>
             )
             : (
               <h4>
                 Add secret to
-                <span className="text-clr-primary">&nbsp;SafeSecrets&nbsp;</span>
+                <span className="text-clr-primary">
+                  &nbsp;
+                  <strong>SafeSecrets</strong>
+                  &nbsp;
+                </span>
                 vault
               </h4>
             )

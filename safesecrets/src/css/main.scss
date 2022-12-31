@@ -11,6 +11,7 @@
   --clr-primary-dark: #DB342C;
   --clr-text-secondary: #bababa;
   --clr-body: #21232D;
+  --clr-body-dark: #2F2E41;
   --clr-success: #1FAF9C;
 
   --fs-200: 0.75rem;
@@ -107,8 +108,7 @@ a{
   min-height: 100vh;
 }
 .container{
-  max-width: 1440px;
-  // width: 95%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 .bg-white{
@@ -186,6 +186,7 @@ select{
   overflow-x: hidden;
 
   option{
+    background-color: var(--clr-body);
     max-width: 300px;
     overflow-x: hidden;
   }
@@ -232,6 +233,12 @@ Swal css
 }
 .swal2-styled.swal2-confirm:focus{
   box-shadow: none !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring{
+  border: .25em solid var(--clr-success);
+}
+.swal2-icon.swal2-success [class^=swal2-success-line]{
+  background-color: var(--clr-success);
 }
 
 @media only screen and (min-width: 768px){

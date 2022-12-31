@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Login from './Login';
 import Register from './Register';
 import Popup from '../common/popup/Popup';
@@ -6,23 +6,25 @@ import ForgotPassword from './ForgotPassword';
 import { LoginRegisterProps } from './types';
 import '../../css/loginregister.scss';
 
-const LoginRegister:React.FC<LoginRegisterProps> = ({ setShowLogin, setLoginStatusChange }) => {
-  const [signInPopup, setSignInPopup] = useState('login');
-
+const LoginRegister:React.FC<LoginRegisterProps> = (
+  {
+    setShowLogin, setLoginStatusChange, popupType, setPopupType,
+  },
+) => {
   const getPopupToDisplay = () => {
-    if (signInPopup === 'login') {
+    if (popupType === 'login') {
       return (
         <Login
-          setSignInPopup={setSignInPopup}
+          setSignInPopup={setPopupType}
           setShowLogin={setShowLogin}
           setLoginStatusChange={setLoginStatusChange}
         />
       );
     }
-    if (signInPopup === 'register') {
-      return <Register setSignInPopup={setSignInPopup} setShowLogin={setShowLogin} />;
+    if (popupType === 'register') {
+      return <Register setSignInPopup={setPopupType} setShowLogin={setShowLogin} />;
     }
-    return <ForgotPassword setSignInPopup={setSignInPopup} />;
+    return <ForgotPassword setSignInPopup={setPopupType} />;
   };
 
   return (

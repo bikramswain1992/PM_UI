@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../utility/session';
+import { LandingPageProps } from './types';
 import '../../css/landingpage.scss';
 import secureImage from '../../images/secure1.svg';
 import documentLocked from '../../images/document-locked.svg';
 import secureShare from '../../images/secure-share.svg';
 import generatePassword from '../../images/generate-password.svg';
 
-const LandingPage = () => {
+const LandingPage: React.FC<LandingPageProps> = ({ setShowLogin, setPopupType }) => {
   const navigate = useNavigate();
   const user = getUser();
 
@@ -17,25 +18,32 @@ const LandingPage = () => {
     }
   }, [user]);
 
+  const openRegistrationPopup = () => {
+    setPopupType('login');
+    setShowLogin(true);
+  };
+
   return (
     <div className="landingpage-content">
       <section className="hero landingpage-section">
-        <div className="hero-image">
-          <img src={secureImage} alt="Security image" />
-        </div>
-        <div className="hero-message">
-          <div className="hero-message-line">Your password&nbsp;</div>
-          <div className="hero-message-line">
-            - is your&nbsp;
-            <span className="text-clr-primary">password</span>
+        <div className="hero-static">
+          <div className="hero-image">
+            <img src={secureImage} alt="Security image" />
           </div>
-          <div className="hero-message-line">
-            Keep your passwords secure with our private vault and access
-            them with one click from all your devices.
+          <div className="hero-message">
+            <div className="hero-message-line">Your password&nbsp;</div>
+            <div className="hero-message-line">
+              - is your&nbsp;
+              <span className="text-clr-primary">password</span>
+            </div>
+            <div className="hero-message-line">
+              Keep your passwords secure with our private vault and access
+              them with one click from all your devices.
+            </div>
           </div>
         </div>
         <div className="hero-action">
-          <button className="btn btn-primary">Try it!</button>
+          <button className="btn btn-primary" onClick={openRegistrationPopup}>Try it!</button>
         </div>
       </section>
       <section className="features landingpage-section">

@@ -55,7 +55,8 @@
     top: 5rem;
     right: 1rem;
     z-index: 10;
-    background-color: var(--clr-black-200);
+    background-color: var(--clr-body);
+    box-shadow: 1px 0px 4px var(--clr-success);
     border-radius: 0.15rem;
     font-size: var(--fs-300);
     color: var(--clr-white-200);
