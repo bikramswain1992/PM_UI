@@ -33,7 +33,7 @@
     opacity: 0;
     width: 90%;
     animation: hero-message-animation 1s forwards ease-in-out;
-    .hero-message-line:first-child(){
+    .hero-message-line:first-child{
       text-align: left;
     }
     .hero-message-line:nth-child(2){

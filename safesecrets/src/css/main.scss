@@ -235,10 +235,10 @@ Swal css
   box-shadow: none !important;
 }
 .swal2-icon.swal2-success .swal2-success-ring{
-  border: .25em solid var(--clr-success);
+  border: .25em solid var(--clr-success) !important;
 }
 .swal2-icon.swal2-success [class^=swal2-success-line]{
-  background-color: var(--clr-success);
+  background-color: var(--clr-success) !important;
 }
 
 @media only screen and (min-width: 768px){
