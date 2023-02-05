@@ -20,6 +20,12 @@ export type RegisterDetails = {
   password: string
 }
 
+export type GoogleLoginCredential = {
+  email: string,
+  name: string,
+  sub: string
+}
+
 export interface LoginRegisterProps {
   setShowLogin: (e: boolean) => void,
   setLoginStatusChange: (e: boolean) => void,

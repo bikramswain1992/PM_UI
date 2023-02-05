@@ -77,11 +77,7 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
                       <img src={profileIcon} alt="email" />
                       <span>Update profile</span>
                     </div>
-                    {
-                  user.loginType === 'normal'
-                    ? <UserLogout />
-                    : <UserGoogleLogout />
-                }
+                    <UserLogout />
                   </div>
                 </div>
               )
