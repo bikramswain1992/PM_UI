@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditSecretProps } from './types';
+import { EditSecretProps } from '../types';
 
 const EditSecret: React.FC<EditSecretProps> = ({ secret, onChange }) => (
   <>

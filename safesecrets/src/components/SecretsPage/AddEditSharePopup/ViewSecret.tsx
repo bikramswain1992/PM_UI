@@ -1,6 +1,6 @@
 import React from 'react';
-import { ViewSecretProps } from './types';
-import copyIcon from '../../images/copy.svg';
+import { ViewSecretProps } from '../types';
+import copyIcon from '../../../images/copy.svg';
 
 const ViewSecret:React.FC<ViewSecretProps> = ({ name, secret }) => {
   const copySecret = () => {

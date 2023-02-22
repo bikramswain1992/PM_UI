@@ -1,7 +1,7 @@
 import React from 'react';
-import showIcon from '../../images/show.svg';
-import deleteIcon from '../../images/delete.svg';
-import { SecretTabBarProps } from './types';
+import { SecretTabBarProps } from '../../SecretsPage/types';
+import showIcon from '../../../images/show.svg';
+import deleteIcon from '../../../images/delete.svg';
 
 const SecretTabBar: React.FC<SecretTabBarProps> = ({ secret, showSecret, deleteSecret }) => (
   <div className="secret-tab-bar">

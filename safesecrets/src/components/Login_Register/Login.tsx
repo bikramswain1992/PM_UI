@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import Swal from 'sweetalert2';
@@ -23,6 +23,7 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
     password: '',
   });
   const [showLoader, setShowLoader] = useState(false);
+  const googleSignInBtn = useRef<HTMLDivElement>(null);
 
   const closeLogin = () => {
     setShowLogin(false);
@@ -108,10 +109,12 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
 
     });
 
-    google.accounts.id.renderButton(
-      document.getElementById('googleSignInBtn'),
-      { theme: 'outline', size: 'large' },
-    );
+    if (googleSignInBtn.current) {
+      google.accounts.id.renderButton(
+        googleSignInBtn.current,
+        { theme: 'outline', size: 'large', type: 'standard' },
+      );
+    }
     // google.accounts.id.prompt();
   }, []);
 
@@ -151,7 +154,7 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
           <a className="nav-link text-sm" onClick={() => setSignInPopup('forgotpassword')}>
             Forgot Password?
           </a>
-          <div id="googleSignInBtn" className="btn-container-center" />
+          <div id="googleSignInBtn" ref={googleSignInBtn} className="btn-container-center" />
         </div>
       </div>
       <div className="popup-footer">

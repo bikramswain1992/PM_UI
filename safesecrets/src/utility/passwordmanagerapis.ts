@@ -13,3 +13,6 @@ export const GetMyProfileAPI = `${ApiPath}/get-my-profile`;
 export const UpdateUserProfileAPI = `${ApiPath}/update-user`;
 export const InitiateContactVerificationAPI = `${ApiPath}/initiate-contact-verification`;
 export const VerifyContactAPI = `${ApiPath}/verify-contact`;
+export const GetSharedSecrets = `${ApiPath}/shared-secret`;
+export const DeleteSharedSecret = `${ApiPath}/delete-shared-secret`;
+export const ShareSecret = `${ApiPath}/share-secret`;

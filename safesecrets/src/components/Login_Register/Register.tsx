@@ -121,7 +121,6 @@ const Register: React.FC<RegisterProps> = ({ setSignInPopup, setShowLogin }) => 
             name="country"
             placeholder="USA, UK, India"
             value={registerDetails.country}
-            defaultValue="null"
             onChange={onChange}
           >
             {
