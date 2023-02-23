@@ -72,7 +72,7 @@ export interface SharedSecretPopupProps {
   sharedSecret: SharedSecrets | undefined,
   closeSharedSecretPopup: () => void,
   token: string,
-  revokeSharing: (e: string) => void
+  revokeSharing: (e: string | undefined) => void
 }
 
 export interface SharedSecretTabBarProps {

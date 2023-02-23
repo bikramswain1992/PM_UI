@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../utility/session';
 import { User } from '../../utility/globaltypes';
-import UserGoogleLogout from './UserGoogleLogout';
 import UserLogout from './UserLogout';
 import { HeaderProps } from './types';
-import { useNavigate } from 'react-router-dom';
 import '../../css/header.scss';
 import logo from '../../images/Logo.svg';
 import userIcon from '../../images/user.svg';

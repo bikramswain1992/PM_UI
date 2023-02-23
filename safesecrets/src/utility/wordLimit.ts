@@ -7,10 +7,13 @@ const getWordWithLimitedLength = (word: string) => {
     wordLen = 10;
   } else if (width <= 756) {
     wordLen = 20;
-  } else {
+  } else if (width <= 960) {
     wordLen = 40;
+  } else {
+    wordLen = 60;
   }
-  return `${word.substring(0, wordLen)}...`;
+  const splitedWord = word.substring(0, wordLen);
+  return splitedWord === word ? splitedWord : `${splitedWord}...`;
 };
 
 export default getWordWithLimitedLength;

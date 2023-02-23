@@ -5,12 +5,14 @@ import { Secret } from '../../utility/globaltypes';
 import { getViewedSecret, setViewedSecrets } from '../../utility/session';
 import Loader from '../common/Loader/Loader';
 import ViewSecret from './AddEditSharePopup/ViewSecret';
-import { deleteSharedSecretApi, readSecretApi } from './api';
+import { readSecretApi } from './api';
 import { SharedSecretPopupProps } from './types';
 
 const SharedSecretPopup:React.FC<SharedSecretPopupProps> = (props) => {
   const MySwal = withReactContent(Swal);
-  const { sharedSecret, closeSharedSecretPopup, token, revokeSharing } = props;
+  const {
+    sharedSecret, closeSharedSecretPopup, token, revokeSharing,
+  } = props;
   const [currentSecretDetails, setCurrentSecretDetails] = useState<Secret>({
     id: '',
     key: '',
@@ -89,7 +91,7 @@ const SharedSecretPopup:React.FC<SharedSecretPopupProps> = (props) => {
       return (
         <>
           <button className="btn btn-secondary" onClick={closeSharedSecretPopup}>Close</button>
-          <button className="btn btn-primary" onClick={revokeSharing}>Revoke</button>
+          <button className="btn btn-primary" onClick={() => revokeSharing(undefined)}>Revoke</button>
         </>
       );
     }

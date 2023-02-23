@@ -7,7 +7,7 @@ const SharedWithMe:React.FC<SharedSecretsProps> = (props) => {
   const {
     filteredSecrets,
     showSecret,
-    deleteSecret,
+    revokeSharing,
   } = props;
 
   return (
@@ -16,7 +16,7 @@ const SharedWithMe:React.FC<SharedSecretsProps> = (props) => {
       secrets={filteredSecrets}
       message="No secrets have been shared with you."
       showSecret={showSecret}
-      deleteSecret={deleteSecret}
+      deleteSecret={revokeSharing}
       barType={barTypeVal.secretSharedWithMeBar}
     />
   );
