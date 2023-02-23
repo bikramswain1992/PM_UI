@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
@@ -8,7 +9,7 @@ import Tabs from '../common/Tabs/Tabs';
 import {
   getUser, clearCacheAndRedirect, setViewedSecrets, setViewedSecretsWithDelete,
 } from '../../utility/session';
-import { deleteSecretApi, getMySecretsApi, getSharedSecretsApi, saveMySecretsApi, shareSecretApi } from './api';
+import { deleteSecretApi, deleteSharedSecretApi, getMySecretsApi, getSharedSecretsApi, saveMySecretsApi, shareSecretApi } from './api';
 import { Secret } from '../../utility/globaltypes';
 import { MySecrets, SharedSecrets } from './types';
 import '../../css/secretspage.scss';
@@ -228,6 +229,7 @@ const SecretsPage = () => {
   const closeSharedSecretPopup = () => {
     setCurrentSharedSecret(undefined);
     setShowSharedSecretPopup(false);
+    getSharedSecrets();
   };
 
   const shareSecret = async (secret:Secret, sharedWithUserEmail: string) => {
@@ -252,7 +254,29 @@ const SecretsPage = () => {
       icon: 'success',
       confirmButtonText: 'Ok',
     });
+    getSharedSecrets();
     closeSecretPopup();
+  };
+
+  const revokeSharing = async (id?: string) => {
+    setShowLoader(true);
+    const deleteSharedSecretResponse = await deleteSharedSecretApi(id ?? currentSharedSecret?.id!, user?.token!);
+    setShowLoader(false);
+
+    if (deleteSharedSecretResponse.errors) {
+      MySwal.fire({
+        text: deleteSharedSecretResponse.errors.join(','),
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
+      return;
+    }
+    MySwal.fire({
+      text: `Access for secret ${currentSharedSecret?.key} has been revoked for user ${currentSharedSecret?.userName}`,
+      icon: 'success',
+      confirmButtonText: 'Ok',
+    });
+    closeSharedSecretPopup();
   };
 
   /* Shared Secrets region */
@@ -293,7 +317,7 @@ const SecretsPage = () => {
                     <SharedSecretsList
                       filteredSecrets={filteredSharedSecrets}
                       showSecret={showSharedSecret}
-                      deleteSecret={deleteSecret}
+                      revokeSharing={revokeSharing}
                     />
                   )
               }
@@ -317,10 +341,12 @@ const SecretsPage = () => {
                 showSharedSecretPopup
                   ? (
                     <Popup customClass="shared-secret-popup">
-                      {/* <SharedSecretPopup
+                      <SharedSecretPopup
                         sharedSecret={currentSharedSecret}
                         closeSharedSecretPopup={closeSharedSecretPopup}
-                      /> */}
+                        token={user.token}
+                        revokeSharing={revokeSharing}
+                      />
                     </Popup>
                   )
                   : <div />

@@ -60,7 +60,7 @@ export interface MySecretProps {
 export interface SharedSecretsProps {
   filteredSecrets: SharedSecrets[] | undefined,
   showSecret: (e: string) => void,
-  deleteSecret: (e: string) => void
+  revokeSharing: (e: string) => void
 }
 
 export interface ShareSecretProps extends ViewSecretProps {
@@ -69,12 +69,14 @@ export interface ShareSecretProps extends ViewSecretProps {
 }
 
 export interface SharedSecretPopupProps {
-  sharedSecret: SharedSecrets
-  closeSharedSecretPopup: () => void
+  sharedSecret: SharedSecrets | undefined,
+  closeSharedSecretPopup: () => void,
+  token: string,
+  revokeSharing: (e: string) => void
 }
 
 export interface SharedSecretTabBarProps {
   sharedSecret: SharedSecrets,
-  showSecret: (e: string) => void
+  showSecret: (e: string) => void,
   deleteSecret: (e: string) => void
 }

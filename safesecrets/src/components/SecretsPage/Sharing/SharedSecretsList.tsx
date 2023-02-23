@@ -4,7 +4,7 @@ import SharedByMe from './SharedByMe';
 import SharedWithMe from './SharedWithMe';
 
 const SharedSecretsList: React.FC<SharedSecretsProps> = (props) => {
-  const { filteredSecrets, showSecret, deleteSecret } = props;
+  const { filteredSecrets, showSecret, revokeSharing } = props;
 
   const sharedByMe = useMemo(() => {
     const secrets = filteredSecrets?.filter((x) => x.isSharedByMe);
@@ -25,7 +25,7 @@ const SharedSecretsList: React.FC<SharedSecretsProps> = (props) => {
             <SharedWithMe
               filteredSecrets={sharedWithMe}
               showSecret={showSecret}
-              deleteSecret={() => { }}
+              revokeSharing={() => { }}
             />
           </div>
           <div className="separator" />
@@ -34,7 +34,7 @@ const SharedSecretsList: React.FC<SharedSecretsProps> = (props) => {
             <SharedByMe
               filteredSecrets={sharedByMe}
               showSecret={showSecret}
-              deleteSecret={deleteSecret}
+              revokeSharing={revokeSharing}
             />
           </div>
         </>

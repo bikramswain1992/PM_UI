@@ -32,9 +32,9 @@ const SecretPopup: React.FC<SecretPopupProps> = ({
     if (!viewedSecret) {
       setShowLoader(true);
       const readSecretResponse = await readSecretApi(currentSecret?.id!, token!);
+      setShowLoader(false);
 
       if (readSecretResponse.errors) {
-        setShowLoader(false);
         MySwal.fire({
           text: readSecretResponse.errors.join(','),
           icon: 'error',
@@ -56,7 +56,6 @@ const SecretPopup: React.FC<SecretPopupProps> = ({
       secret: viewedSecret.secret,
     });
     setViewedSecrets(viewedSecret);
-    setShowLoader(false);
   };
 
   useEffect(() => {
@@ -188,7 +187,7 @@ const SecretPopup: React.FC<SecretPopupProps> = ({
       </div>
       <div className="popup-footer">
         <div className="btn-container-center">
-          <button className="btn btn-secondary" onClick={closeSecretPopup}>Cancel</button>
+          <button className="btn btn-secondary" onClick={closeSecretPopup}>Close</button>
           {
             showButtonsWithMode()
           }
