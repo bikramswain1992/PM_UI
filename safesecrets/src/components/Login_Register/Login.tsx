@@ -112,7 +112,9 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
     if (googleSignInBtn.current) {
       google.accounts.id.renderButton(
         googleSignInBtn.current,
-        { theme: 'outline', size: 'large', type: 'standard' },
+        {
+          theme: 'outline', size: 'large', type: 'standard',
+        },
       );
     }
     // google.accounts.id.prompt();

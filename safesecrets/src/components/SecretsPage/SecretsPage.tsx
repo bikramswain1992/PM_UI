@@ -88,6 +88,7 @@ const SecretsPage = () => {
         return;
       }
       if (sharedSecretsResponse.type.toLowerCase() === 'notfound') {
+        setSharedSecrets([]);
         return;
       }
       MySwal.fire({
@@ -229,7 +230,6 @@ const SecretsPage = () => {
   const closeSharedSecretPopup = () => {
     setCurrentSharedSecret(undefined);
     setShowSharedSecretPopup(false);
-    getSharedSecrets();
   };
 
   const shareSecret = async (secret:Secret, sharedWithUserEmail: string) => {
@@ -259,24 +259,37 @@ const SecretsPage = () => {
   };
 
   const revokeSharing = async (id?: string) => {
-    setShowLoader(true);
-    const deleteSharedSecretResponse = await deleteSharedSecretApi(id ?? currentSharedSecret?.id!, user?.token!);
-    setShowLoader(false);
-
-    if (deleteSharedSecretResponse.errors) {
-      MySwal.fire({
-        text: deleteSharedSecretResponse.errors.join(','),
-        icon: 'error',
-        confirmButtonText: 'Ok',
-      });
-      return;
-    }
+    const currentId = id ?? currentSharedSecret?.id!;
+    const sercetName = filteredSharedSecrets?.filter((x) => x.id === currentId)[0].key;
     MySwal.fire({
-      text: `Access for secret ${currentSharedSecret?.key} has been revoked for user ${currentSharedSecret?.userName}`,
-      icon: 'success',
+      text: `Please confirm if you would want to revoke access for ${sercetName}?`,
+      icon: 'warning',
+      showCancelButton: true,
       confirmButtonText: 'Ok',
+      denyButtonText: 'Cancel',
+    }).then(async (response) => {
+      if (response.isConfirmed) {
+        setShowLoader(true);
+        const deleteSharedSecretResponse = await deleteSharedSecretApi(currentId, user?.token!);
+        setShowLoader(false);
+
+        if (deleteSharedSecretResponse.errors) {
+          MySwal.fire({
+            text: deleteSharedSecretResponse.errors.join(','),
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+          return;
+        }
+        MySwal.fire({
+          text: `Access for secret ${currentSharedSecret?.key} has been revoked for user ${currentSharedSecret?.userName}`,
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        });
+        closeSharedSecretPopup();
+        getSharedSecrets();
+      }
     });
-    closeSharedSecretPopup();
   };
 
   /* Shared Secrets region */

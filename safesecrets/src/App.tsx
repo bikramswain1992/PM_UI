@@ -12,6 +12,7 @@ const App = () => {
   const NotFound = lazy(() => import('./components/NotFound/NotFound'));
   const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy/PrivacyPolicy'));
   const UserProfile = lazy(() => import('./components/UserProfile/UserProfile'));
+  const About = lazy(() => import('./components/About/About'));
 
   const [showLogin, setShowLogin] = useState(false);
   const [loginStatusChange, setLoginStatusChange] = useState(false);
@@ -41,6 +42,14 @@ const App = () => {
         element={(
           <Suspense fallback={<Loader showLoader />}>
             <PrivacyPolicy />
+          </Suspense>
+        )}
+      />
+      <Route
+        path="/about"
+        element={(
+          <Suspense fallback={<Loader showLoader />}>
+            <About />
           </Suspense>
         )}
       />

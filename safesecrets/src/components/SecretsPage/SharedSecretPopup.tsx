@@ -67,7 +67,7 @@ const SharedSecretPopup:React.FC<SharedSecretPopupProps> = (props) => {
             <strong>SafeSecrets</strong>
             &nbsp;
           </span>
-          shared with vault
+          shared by me
         </h4>
       );
     }
@@ -78,7 +78,7 @@ const SharedSecretPopup:React.FC<SharedSecretPopupProps> = (props) => {
           <strong>SafeSecrets</strong>
           &nbsp;
         </span>
-        shared by vault
+        shared with me
       </h4>
     );
   };
