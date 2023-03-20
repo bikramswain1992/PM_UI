@@ -1,16 +1,17 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../utility/session';
 import { User } from '../../utility/globaltypes';
-import UserGoogleLogout from './UserGoogleLogout';
 import UserLogout from './UserLogout';
 import { HeaderProps } from './types';
-import { useNavigate } from 'react-router-dom';
 import '../../css/header.scss';
 import logo from '../../images/Logo.svg';
 import userIcon from '../../images/user.svg';
 import badgeIcon from '../../images/badge.svg';
 import mailIcon from '../../images/mail.svg';
 import profileIcon from '../../images/profile.svg';
+import infoIcon from '../../images/information.svg';
 
 const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
   const navigate = useNavigate();
@@ -52,6 +53,10 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
     navigate('/userprofile');
   };
 
+  const gotoAbout = () => {
+    navigate('/about');
+  };
+
   const getUserOrLogin = () => {
     if (user) {
       return (
@@ -74,14 +79,14 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
                       <span>{user.email}</span>
                     </div>
                     <div className="user-info update-profile" title="Update profile" onClick={editUserProfile}>
-                      <img src={profileIcon} alt="email" />
+                      <img src={profileIcon} alt="Update profile" />
                       <span>Update profile</span>
                     </div>
-                    {
-                  user.loginType === 'normal'
-                    ? <UserLogout />
-                    : <UserGoogleLogout />
-                }
+                    <div className="user-info about-us" title="About us" onClick={gotoAbout}>
+                      <img src={infoIcon} alt="About us" />
+                      <span>About</span>
+                    </div>
+                    <UserLogout />
                   </div>
                 </div>
               )
@@ -100,8 +105,15 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
         <div className="logo">
           <img className="logo-img" src={logo} alt="Logo" />
         </div>
-        <div className="user-login">
-          {getUserOrLogin()}
+        <div className="header-navigation">
+          {
+            !user
+              ? <div className="about-nav" onClick={gotoAbout}>About</div>
+              : <></>
+          }
+          <div className="user-login">
+            {getUserOrLogin()}
+          </div>
         </div>
       </div>
     </header>

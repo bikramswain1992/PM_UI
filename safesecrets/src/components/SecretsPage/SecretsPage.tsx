@@ -1,42 +1,63 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import SecretPopup from './SecretPopup';
-import Popup from '../common/popup/Popup';
 import Loader from '../common/Loader/Loader';
 import SecretFilter from './SecretFilter';
-import SecretList from '../common/SecretList/SecretList';
+import Tabs from '../common/Tabs/Tabs';
 import {
   getUser, clearCacheAndRedirect, setViewedSecrets, setViewedSecretsWithDelete,
 } from '../../utility/session';
-import { deleteSecretApi, getMySecretsApi, saveMySecretsApi } from './api';
+import { deleteSecretApi, deleteSharedSecretApi, getMySecretsApi, getSharedSecretsApi, saveMySecretsApi, shareSecretApi } from './api';
 import { Secret } from '../../utility/globaltypes';
-import { MySecrets } from './types';
+import { MySecrets, SharedSecrets } from './types';
 import '../../css/secretspage.scss';
+import Tab from '../common/Tabs/Tab';
+import { TabProps } from '../common/Tabs/types';
+import MySecretsList from './MySecretsList';
+import SharedSecretsList from './Sharing/SharedSecretsList';
+import Popup from '../common/popup/Popup';
+import SecretPopup from './SecretPopup';
+import SharedSecretPopup from './SharedSecretPopup';
 
 const SecretsPage = () => {
   const MySwal = withReactContent(Swal);
   const user = useMemo(() => getUser(), []);
 
   const [mySecrets, setMySecrets] = useState<MySecrets[] | undefined>();
+  const [sharedSecrets, setSharedSecrets] = useState<SharedSecrets[] | undefined>();
   const [searchKey, setSearchKey] = useState('');
   const [showSecretPopup, setShowSecretPopup] = useState(false);
   const [currentSecret, setCurrentSecret] = useState<MySecrets>();
+  const [showSharedSecretPopup, setShowSharedSecretPopup] = useState(false);
+  const [currentSharedSecret, setCurrentSharedSecret] = useState<SharedSecrets>();
 
   const [showLoader, setShowLoader] = useState(false);
+
+  const [tabs, setTabs] = useState<TabProps[]>([
+    {
+      isActive: true,
+      title: 'My secrets',
+    },
+    {
+      isActive: false,
+      title: 'Shared secrets',
+    },
+  ]);
 
   const filteredSecrets = useMemo(() => mySecrets?.filter(
     (item) => item.key.toLowerCase().includes(searchKey.toLowerCase()),
   ), [searchKey, mySecrets]);
 
-  const addSecret = () => {
-    setShowSecretPopup(true);
-  };
+  const filteredSharedSecrets = useMemo(() => sharedSecrets?.filter(
+    (item) => item.key.toLowerCase().includes(searchKey.toLowerCase()),
+  ), [searchKey, sharedSecrets]);
+
+  /* Common region */
 
   const getMySecrets = async () => {
-    setShowLoader(true);
     const mySecretsResponse = await getMySecretsApi(user?.token);
-    setShowLoader(false);
 
     if (mySecretsResponse.errors) {
       if (mySecretsResponse.type.toLowerCase() === 'forbidden') {
@@ -58,16 +79,76 @@ const SecretsPage = () => {
     setMySecrets([...mySecretsResponse]);
   };
 
+  const getSharedSecrets = async () => {
+    const sharedSecretsResponse = await getSharedSecretsApi(user?.token);
+
+    if (sharedSecretsResponse.errors) {
+      if (sharedSecretsResponse.type.toLowerCase() === 'forbidden') {
+        clearCacheAndRedirect();
+        return;
+      }
+      if (sharedSecretsResponse.type.toLowerCase() === 'notfound') {
+        setSharedSecrets([]);
+        return;
+      }
+      MySwal.fire({
+        text: sharedSecretsResponse.errors.join(','),
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
+
+      return;
+    }
+
+    setSharedSecrets([...sharedSecretsResponse]);
+  };
+
+  const getAllSecrets = async () => {
+    setShowLoader(true);
+    const allSecrets = await Promise.all([getMySecrets(), getSharedSecrets()]);
+    setShowLoader(false);
+  };
+
   useEffect(() => {
     if (!user) {
       clearCacheAndRedirect();
     } else {
-      getMySecrets();
+      getAllSecrets();
     }
   }, [user]);
 
+  const handleTabSwitch = (title: string) => {
+    const newActiveConfig = tabs.map((x) => {
+      if (x.title === title) {
+        return { ...x, isActive: true };
+      }
+      return { ...x, isActive: false };
+    });
+
+    setTabs([...newActiveConfig]);
+  };
+
+  /* Common region */
+
+  /* Secrets region */
+
+  useEffect(() => {
+    if (currentSecret) {
+      setShowSecretPopup(true);
+    }
+  }, [currentSecret]);
+
   const showSecret = (id: string) => {
     setCurrentSecret(mySecrets?.filter((item) => item.id === id)[0]);
+  };
+
+  const addSecret = () => {
+    setShowSecretPopup(true);
+  };
+
+  const closeSecretPopup = () => {
+    setCurrentSecret(undefined);
+    setShowSecretPopup(false);
   };
 
   const deleteSecret = async (id: string) => {
@@ -102,23 +183,12 @@ const SecretsPage = () => {
     });
   };
 
-  useEffect(() => {
-    if (currentSecret) {
-      setShowSecretPopup(true);
-    }
-  }, [currentSecret]);
-
-  const closeAddSecretPopup = () => {
-    setCurrentSecret(undefined);
-    setShowSecretPopup(false);
-  };
-
   const saveMySecret = async (secret:Secret) => {
     setShowLoader(true);
     const saveSecretResponse = await saveMySecretsApi(secret, user?.token!);
+    setShowLoader(false);
 
     if (saveSecretResponse.errors) {
-      setShowLoader(false);
       MySwal.fire({
         text: saveSecretResponse.errors.join(','),
         icon: 'error',
@@ -126,7 +196,6 @@ const SecretsPage = () => {
       });
       return;
     }
-    setShowLoader(false);
     MySwal.fire({
       text: 'Your secret has been successfully saved!',
       icon: 'success',
@@ -139,10 +208,91 @@ const SecretsPage = () => {
       otherSecrets.push({ id: secret.id, key: secret.key });
     }
     setMySecrets([...otherSecrets]);
-    closeAddSecretPopup();
+    closeSecretPopup();
 
     setViewedSecrets(secret);
   };
+
+  /* Secrets region */
+
+  /* Shared Secrets region */
+
+  const showSharedSecret = (id: string) => {
+    setCurrentSharedSecret(sharedSecrets?.filter((item) => item.id === id)[0]);
+  };
+
+  useEffect(() => {
+    if (currentSharedSecret) {
+      setShowSharedSecretPopup(true);
+    }
+  }, [currentSharedSecret]);
+
+  const closeSharedSecretPopup = () => {
+    setCurrentSharedSecret(undefined);
+    setShowSharedSecretPopup(false);
+  };
+
+  const shareSecret = async (secret:Secret, sharedWithUserEmail: string) => {
+    setShowLoader(true);
+    const shareSecretResponse = await shareSecretApi({
+      secretId: secret.id,
+      sharedWithUserEmail,
+    }, user?.token!);
+    setShowLoader(false);
+
+    if (shareSecretResponse.errors) {
+      MySwal.fire({
+        text: shareSecretResponse.errors.join(','),
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
+      return;
+    }
+
+    MySwal.fire({
+      text: 'Your secret has been successfully shared!',
+      icon: 'success',
+      confirmButtonText: 'Ok',
+    });
+    getSharedSecrets();
+    closeSecretPopup();
+  };
+
+  const revokeSharing = async (id?: string) => {
+    const currentId = id ?? currentSharedSecret?.id!;
+    const sercetName = filteredSharedSecrets?.filter((x) => x.id === currentId)[0].key;
+    MySwal.fire({
+      text: `Please confirm if you would want to revoke access for ${sercetName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ok',
+      denyButtonText: 'Cancel',
+    }).then(async (response) => {
+      if (response.isConfirmed) {
+        setShowLoader(true);
+        const deleteSharedSecretResponse = await deleteSharedSecretApi(currentId, user?.token!);
+        setShowLoader(false);
+
+        if (deleteSharedSecretResponse.errors) {
+          MySwal.fire({
+            text: deleteSharedSecretResponse.errors.join(','),
+            icon: 'error',
+            confirmButtonText: 'Ok',
+          });
+          return;
+        }
+        MySwal.fire({
+          text: `Access for secret ${currentSharedSecret?.key} has been revoked for user ${currentSharedSecret?.userName}`,
+          icon: 'success',
+          confirmButtonText: 'Ok',
+        });
+        closeSharedSecretPopup();
+        getSharedSecrets();
+      }
+    });
+  };
+
+  /* Shared Secrets region */
 
   return (
     <div>
@@ -150,27 +300,65 @@ const SecretsPage = () => {
         user
           ? (
             <>
+              <Tabs>
+                {
+                  tabs.map((x) => (
+                    <Tab
+                      key={x.title}
+                      isActive={x.isActive}
+                      title={x.title}
+                      onClick={(e) => handleTabSwitch(x.title)}
+                    />
+                  ))
+                }
+              </Tabs>
               <SecretFilter
                 searchKey={searchKey}
                 setSearchKey={setSearchKey}
                 addSecret={addSecret}
               />
-              <SecretList
-                pageLength={10}
-                secrets={filteredSecrets}
-                message="You don't have any secrets. Start adding now."
-                showSecret={showSecret}
-                deleteSecret={deleteSecret}
-              />
+              {
+                tabs.filter((x) => x.isActive)[0].title === 'My secrets'
+                  ? (
+                    <MySecretsList
+                      filteredSecrets={filteredSecrets}
+                      showSecret={showSecret}
+                      deleteSecret={deleteSecret}
+                    />
+                  )
+                  : (
+                    <SharedSecretsList
+                      filteredSecrets={filteredSharedSecrets}
+                      showSecret={showSharedSecret}
+                      revokeSharing={revokeSharing}
+                    />
+                  )
+              }
               {
                 showSecretPopup
                   ? (
-                    <Popup customClass="add-secret-popup">
+                    <Popup customClass="secret-popup">
                       <SecretPopup
                         secret={currentSecret}
-                        closeSecretPopup={closeAddSecretPopup}
+                        closeSecretPopup={closeSecretPopup}
                         saveMySecret={saveMySecret}
-                        token={user?.token}
+                        token={user.token}
+                        isSharingEnabled
+                        shareSecret={shareSecret}
+                      />
+                    </Popup>
+                  )
+                  : <div />
+              }
+              {
+                showSharedSecretPopup
+                  ? (
+                    <Popup customClass="shared-secret-popup">
+                      <SharedSecretPopup
+                        sharedSecret={currentSharedSecret}
+                        closeSharedSecretPopup={closeSharedSecretPopup}
+                        token={user.token}
+                        revokeSharing={revokeSharing}
                       />
                     </Popup>
                   )

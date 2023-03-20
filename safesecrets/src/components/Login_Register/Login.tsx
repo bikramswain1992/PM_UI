@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from 'gapi-script';
+import jwtDecode from 'jwt-decode';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Loader from '../common/Loader/Loader';
 import { setUser } from '../../utility/session';
 import { loginApi, loginViaIdentityProviderApi } from './api';
 import { User } from '../../utility/globaltypes';
-import { LoginDetails, LoginIdentityProviderDetails, LoginProps } from './types';
+import {
+  LoginDetails, LoginIdentityProviderDetails, LoginProps, GoogleLoginCredential,
+} from './types';
 
 import '../../css/popup.scss';
 
@@ -17,20 +18,12 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
   const MySwal = withReactContent(Swal);
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  useEffect(() => {
-    const initializeGoogleClient = () => {
-      gapi.client.init({
-        clientId: googleClientId,
-      });
-    };
-    gapi.load('client:auth2', initializeGoogleClient);
-  }, []);
-
   const [loginDetails, setLoginDetails] = useState<LoginDetails>({
     email: '',
     password: '',
   });
   const [showLoader, setShowLoader] = useState(false);
+  const googleSignInBtn = useRef<HTMLDivElement>(null);
 
   const closeLogin = () => {
     setShowLogin(false);
@@ -84,11 +77,11 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
   };
 
   const googleLoginSuccess = async (res: any) => {
-    const profile = res.profileObj;
+    const profile = jwtDecode(res.credential) as GoogleLoginCredential;
     const loginViaIdentityDetails: LoginIdentityProviderDetails = {
       email: profile.email,
       name: profile.name,
-      uniqueId: profile.googleId,
+      uniqueId: profile.sub,
       provider: 'Google',
     };
 
@@ -108,15 +101,24 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
     postLoginActions(userDetails, 'google');
   };
 
-  const googleLoginError = (err: any) => {
-    if (err.details) {
-      MySwal.fire({
-        text: err.details,
-        icon: 'error',
-        confirmButtonText: 'Ok',
-      });
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: googleClientId,
+      callback: googleLoginSuccess,
+
+    });
+
+    if (googleSignInBtn.current) {
+      google.accounts.id.renderButton(
+        googleSignInBtn.current,
+        {
+          theme: 'outline', size: 'large', type: 'standard',
+        },
+      );
     }
-  };
+    // google.accounts.id.prompt();
+  }, []);
 
   return (
     <>
@@ -154,14 +156,7 @@ const Login: React.FC<LoginProps> = ({ setSignInPopup, setShowLogin, setLoginSta
           <a className="nav-link text-sm" onClick={() => setSignInPopup('forgotpassword')}>
             Forgot Password?
           </a>
-          <GoogleLogin
-            clientId={googleClientId}
-            buttonText="Sign in with Google"
-            onSuccess={googleLoginSuccess}
-            onFailure={googleLoginError}
-            cookiePolicy="single_host_origin"
-            isSignedIn
-          />
+          <div id="googleSignInBtn" ref={googleSignInBtn} className="btn-container-center" />
         </div>
       </div>
       <div className="popup-footer">

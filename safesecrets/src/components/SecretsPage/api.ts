@@ -1,8 +1,9 @@
 import {
   DeleteSecretAPI, GetMySecretsAPI, ReadSecretAPI, SetSecretAPI,
+  GetSharedSecrets, ShareSecret, DeleteSharedSecret,
 } from '../../utility/passwordmanagerapis';
 import handleApiResponse from '../../utility/apiErrorHandler';
-import { MySecrets } from './types';
+import { MySecrets, ShareSecretModel } from './types';
 
 export const getMySecretsApi = async (token: string | undefined) => {
   const mySecrets = await fetch(GetMySecretsAPI, {
@@ -65,4 +66,51 @@ export const deleteSecretApi = async (id: string, token: string) => {
     .catch((err) => handleApiResponse(err));
 
   return deleteResponse;
+};
+
+export const getSharedSecretsApi = async (token: string | undefined) => {
+  const sharedSecrets = await fetch(GetSharedSecrets, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    redirect: 'follow',
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
+
+  return sharedSecrets;
+};
+
+export const shareSecretApi = async (shareSecret: ShareSecretModel, token: string) => {
+  const shareSecretResponse = await fetch(ShareSecret, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    redirect: 'follow',
+    body: JSON.stringify(shareSecret),
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
+
+  return shareSecretResponse;
+};
+
+export const deleteSharedSecretApi = async (sharedSecretId: string, token: string) => {
+  const deleteSharedSecretResponse = await fetch(DeleteSharedSecret, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    redirect: 'follow',
+    body: JSON.stringify({ sharedSecretId }),
+  }).then((resp) => handleApiResponse(resp))
+    .catch((err) => handleApiResponse(err));
+
+  return deleteSharedSecretResponse;
 };
