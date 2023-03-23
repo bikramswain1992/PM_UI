@@ -118,6 +118,7 @@ const SecretsPage = () => {
   }, [user]);
 
   const handleTabSwitch = (title: string) => {
+    setSearchKey('');
     const newActiveConfig = tabs.map((x) => {
       if (x.title === title) {
         return { ...x, isActive: true };
@@ -179,6 +180,7 @@ const SecretsPage = () => {
         }
         setMySecrets([...otherSecrets]);
         setViewedSecretsWithDelete(id);
+        getSharedSecrets();
       }
     });
   };
@@ -260,9 +262,9 @@ const SecretsPage = () => {
 
   const revokeSharing = async (id?: string) => {
     const currentId = id ?? currentSharedSecret?.id!;
-    const sercetName = filteredSharedSecrets?.filter((x) => x.id === currentId)[0].key;
+    const sercetName = filteredSharedSecrets?.filter((x) => x.id === currentId)[0];
     MySwal.fire({
-      text: `Please confirm if you would want to revoke access for ${sercetName}?`,
+      text: `Please confirm if you would want to revoke access for ${sercetName?.key}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Ok',
@@ -282,7 +284,7 @@ const SecretsPage = () => {
           return;
         }
         MySwal.fire({
-          text: `Access for secret ${currentSharedSecret?.key} has been revoked for user ${currentSharedSecret?.userName}`,
+          text: `Access for secret ${sercetName?.key} has been revoked for user ${sercetName?.userName}`,
           icon: 'success',
           confirmButtonText: 'Ok',
         });

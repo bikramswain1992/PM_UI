@@ -54,7 +54,15 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
   };
 
   const gotoAbout = () => {
+    showHideUserDetails();
     navigate('/about');
+  };
+
+  const gotoHome = () => {
+    if (user && user.email) {
+      navigate('mysecrets');
+    }
+    navigate('.');
   };
 
   const getUserOrLogin = () => {
@@ -103,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({ setShowLogin, loginStatusChange }) => {
     <header className="site-header">
       <div className="header-content">
         <div className="logo">
-          <img className="logo-img" src={logo} alt="Logo" />
+          <img className="logo-img" src={logo} alt="Logo" onClick={gotoHome} />
         </div>
         <div className="header-navigation">
           {
