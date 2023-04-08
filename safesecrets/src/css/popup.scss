@@ -37,6 +37,11 @@
   font-size: var(--fs-700);
   font-weight: var(--fw-400);
   color: var(--clr-white-400);
+
+  h4{
+    width: 95%;
+    margin: 1.5rem auto;
+  }
 }
 .popup-footer{
   display: flex;

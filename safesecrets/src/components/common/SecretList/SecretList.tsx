@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 import React, { useEffect, useMemo, useState } from 'react';
-import SecretTabBar from '../../SecretsPage/SecretTabBar';
-import { SecretListProps } from './types';
+import { SharedSecrets } from '../../SecretsPage/types';
+import SecretTabBar from './SecretTabBar';
+import SharedSecretTabBar from './SharedSecretTabBar';
+import { SecretListProps, barTypeVal } from './types';
 
 const SecretList: React.FC<SecretListProps> = (
   {
-    pageLength = 10, secrets, message, showSecret, deleteSecret,
+    pageLength = 10, secrets, message, showSecret, deleteSecret, barType
   },
 ) => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -31,6 +33,27 @@ const SecretList: React.FC<SecretListProps> = (
     setPageNumber(updatedPageNumber);
   };
 
+  const getBar = () => {
+    if (barType === barTypeVal.secretBar) {
+      return pagedSecrets?.map((x) => (
+        <SecretTabBar
+          key={x.id}
+          secret={x}
+          showSecret={showSecret}
+          deleteSecret={deleteSecret}
+        />
+      ));
+    }
+    return pagedSecrets?.map((x) => (
+      <SharedSecretTabBar
+        key={x.id}
+        sharedSecret={x as SharedSecrets}
+        showSecret={showSecret}
+        deleteSecret={deleteSecret}
+      />
+    ));
+  };
+
   const getPageInfo = () => {
     const startNum = ((pageNumber - 1) * pageLength) + 1;
     const endNum = (pageNumber * pageLength) > (secrets?.length ?? 0)
@@ -42,20 +65,13 @@ const SecretList: React.FC<SecretListProps> = (
   return (
     <div className="secrets-list">
       {
-        pagedSecrets
+        pagedSecrets && pagedSecrets.length > 0
           ? (
             <>
               <div className="my-secrets-main">
                 {
-                pagedSecrets.map((x) => (
-                  <SecretTabBar
-                    key={x.id}
-                    secret={x}
-                    showSecret={showSecret}
-                    deleteSecret={deleteSecret}
-                  />
-                ))
-              }
+                  getBar()
+                }
               </div>
               <div className="page-info">
                 <span className="nav-link text-sm" onClick={() => changePage(-1)}>« Prev</span>
