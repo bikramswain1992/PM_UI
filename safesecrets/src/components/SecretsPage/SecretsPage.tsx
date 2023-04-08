@@ -235,6 +235,14 @@ const SecretsPage = () => {
   };
 
   const shareSecret = async (secret:Secret, sharedWithUserEmail: string) => {
+    if (sharedWithUserEmail === user?.email) {
+      MySwal.fire({
+        text: 'Nice try! You already have access to this secret. Please provide another email to share with.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+      });
+      return;
+    }
     setShowLoader(true);
     const shareSecretResponse = await shareSecretApi({
       secretId: secret.id,
@@ -244,7 +252,7 @@ const SecretsPage = () => {
 
     if (shareSecretResponse.errors) {
       MySwal.fire({
-        text: shareSecretResponse.errors.join(','),
+        text: 'Could not share your secret. Please check the email again.',
         icon: 'error',
         confirmButtonText: 'Ok',
       });
