@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import Loader from '../common/Loader/Loader';
@@ -22,6 +23,7 @@ import SecretPopup from './SecretPopup';
 import SharedSecretPopup from './SharedSecretPopup';
 
 const SecretsPage = () => {
+  const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const user = useMemo(() => getUser(), []);
 
@@ -61,6 +63,7 @@ const SecretsPage = () => {
 
     if (mySecretsResponse.errors) {
       if (mySecretsResponse.type.toLowerCase() === 'forbidden') {
+        navigate(0);
         clearCacheAndRedirect();
         return;
       }
