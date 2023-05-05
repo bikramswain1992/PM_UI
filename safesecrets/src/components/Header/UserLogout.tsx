@@ -1,9 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { clearCacheAndRedirect } from '../../utility/session';
 import logoutIcon from '../../images/logout.svg';
 
 const UserLogout = () => {
+  const navigate = useNavigate();
+
   const userLogout = () => {
+    navigate(0);
     clearCacheAndRedirect();
   };
 
