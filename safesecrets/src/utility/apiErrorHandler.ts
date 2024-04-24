@@ -5,7 +5,11 @@ const handleApiResponse = async (resp: any) => {
         errors: ['Server is offline'],
       };
     }
-    const response = await resp.json();
+    if (resp.headers.get('content-type').includes('application/json')) {
+      const response = await resp.json();
+      return response;
+    }
+    const response = await resp.text();
     return response;
   } catch {
     const err = await resp.text();
